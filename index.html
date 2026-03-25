@@ -6,9 +6,9 @@
 <title>Eva & Josef – 20. června 2026</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
 :root {
   --bark:    #3d2e1e;
   --moss:    #5a6b4a;
@@ -21,515 +21,454 @@
   --gold-lt: #e8d5b0;
   --text:    #2e2218;
   --muted:   #7a6a5a;
+  --blue:    #4a6fa5;
 }
-
 html { scroll-behavior: smooth; }
+body { font-family: 'Jost', sans-serif; background: var(--cream); color: var(--text); overflow-x: hidden; }
 
-body {
-  font-family: 'Jost', sans-serif;
-  background: var(--cream);
-  color: var(--text);
-  overflow-x: hidden;
+/* ── PASSWORD SCREEN ── */
+#password-screen {
+  position: fixed; inset: 0; z-index: 9000;
+  background: var(--bark);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center; padding: 2rem;
 }
-
-/* ─── NOISE TEXTURE OVERLAY ─── */
-body::before {
+#password-screen::before {
   content: '';
-  position: fixed; inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 70% 50% at 50% 40%, rgba(90,107,74,.25) 0%, transparent 65%);
   pointer-events: none;
-  z-index: 9999;
-  opacity: .5;
 }
+.pw-monogram {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 3.5rem; font-weight: 300; font-style: italic;
+  color: var(--gold-lt); margin-bottom: .25rem; position: relative;
+}
+.pw-sub {
+  font-size: .7rem; letter-spacing: .2em; text-transform: uppercase;
+  color: rgba(255,255,255,.35); margin-bottom: 3rem; position: relative;
+}
+.pw-label {
+  font-size: .72rem; font-weight: 500; letter-spacing: .15em; text-transform: uppercase;
+  color: rgba(255,255,255,.5); margin-bottom: .75rem; position: relative;
+}
+#pw-input {
+  background: rgba(255,255,255,.07);
+  border: 1px solid rgba(255,255,255,.2);
+  border-radius: 10px; padding: .9rem 1.4rem;
+  font-family: 'Jost', sans-serif; font-size: 1rem; font-weight: 300;
+  color: #fff; text-align: center; letter-spacing: .12em;
+  width: 260px; outline: none;
+  transition: border-color .2s, background .2s;
+  position: relative;
+}
+#pw-input:focus { border-color: var(--gold-lt); background: rgba(255,255,255,.11); }
+#pw-input::placeholder { color: rgba(255,255,255,.25); letter-spacing: .08em; }
+#pw-btn {
+  display: block; margin: 1rem auto 0;
+  background: var(--gold); color: #fff; border: none;
+  padding: .8rem 2.2rem; border-radius: 8px;
+  font-family: 'Jost', sans-serif; font-size: .82rem; font-weight: 500;
+  letter-spacing: .12em; text-transform: uppercase; cursor: pointer;
+  transition: background .2s, transform .15s;
+  position: relative;
+}
+#pw-btn:hover { background: #c8a46a; transform: translateY(-1px); }
+#pw-error {
+  color: #e8a0a0; font-size: .78rem; margin-top: .75rem;
+  display: none; position: relative;
+}
+.pw-hint { color: rgba(255,255,255,.2); font-size: .72rem; margin-top: 2rem; position: relative; }
 
-/* ─── NAV ─── */
+/* ── MAIN CONTENT (hidden until password) ── */
+#main-content { display: none; }
+
+/* ── NAV ── */
 nav {
-  position: fixed; top: 0; left: 0; right: 0;
-  z-index: 100;
-  padding: 1.2rem 5%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: rgba(253,250,245,.88);
-  backdrop-filter: blur(12px);
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  padding: 1rem 5%;
+  display: flex; justify-content: space-between; align-items: center;
+  background: rgba(253,250,245,.9); backdrop-filter: blur(14px);
   border-bottom: 1px solid rgba(181,168,152,.3);
 }
-
 .nav-monogram {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 1.3rem;
-  font-weight: 600;
-  color: var(--bark);
-  letter-spacing: .08em;
+  font-size: 1.3rem; font-weight: 600; color: var(--bark); letter-spacing: .06em;
 }
-
-.nav-links {
-  display: flex; gap: 2rem; list-style: none;
-}
+.nav-links { display: flex; gap: 1.6rem; list-style: none; }
 .nav-links a {
-  text-decoration: none;
-  font-size: .78rem;
-  font-weight: 500;
-  letter-spacing: .12em;
-  text-transform: uppercase;
-  color: var(--muted);
+  text-decoration: none; font-size: .75rem; font-weight: 500;
+  letter-spacing: .1em; text-transform: uppercase; color: var(--muted);
   transition: color .2s;
 }
 .nav-links a:hover { color: var(--bark); }
-
-.lang-toggle {
-  display: flex; gap: .25rem;
-}
+.lang-toggle { display: flex; gap: .25rem; }
 .lang-btn {
-  background: none; border: 1px solid var(--stone);
-  color: var(--muted); font-family: 'Jost', sans-serif;
-  font-size: .72rem; font-weight: 500; letter-spacing: .08em;
-  padding: .3rem .6rem; border-radius: 4px; cursor: pointer;
+  background: none; border: 1px solid var(--stone); color: var(--muted);
+  font-family: 'Jost', sans-serif; font-size: .7rem; font-weight: 500;
+  letter-spacing: .08em; padding: .28rem .55rem; border-radius: 4px; cursor: pointer;
   transition: all .2s;
 }
-.lang-btn.active, .lang-btn:hover {
-  background: var(--bark); border-color: var(--bark); color: #fff;
-}
+.lang-btn.active, .lang-btn:hover { background: var(--bark); border-color: var(--bark); color: #fff; }
 
-/* ─── HERO ─── */
+/* ── HERO ── */
 .hero {
-  min-height: 100vh;
-  display: flex; flex-direction: column;
+  min-height: 100vh; display: flex; flex-direction: column;
   align-items: center; justify-content: center;
-  text-align: center;
-  position: relative;
+  text-align: center; position: relative;
   padding: 6rem 5% 4rem;
   background:
     radial-gradient(ellipse 80% 60% at 50% 0%, rgba(90,107,74,.12) 0%, transparent 70%),
     radial-gradient(ellipse 60% 40% at 80% 100%, rgba(184,148,90,.1) 0%, transparent 60%),
     var(--cream);
 }
-
-/* botanical SVG decorations */
 .botanical-left, .botanical-right {
-  position: absolute;
-  top: 50%; transform: translateY(-50%);
-  width: 220px; opacity: .18;
-  pointer-events: none;
+  position: absolute; top: 50%; transform: translateY(-50%);
+  width: 200px; opacity: .16; pointer-events: none;
 }
-.botanical-left { left: -30px; }
-.botanical-right { right: -30px; transform: translateY(-50%) scaleX(-1); }
-
+.botanical-left { left: -20px; }
+.botanical-right { right: -20px; transform: translateY(-50%) scaleX(-1); }
 .hero-date {
-  font-size: .72rem;
-  font-weight: 500;
-  letter-spacing: .22em;
-  text-transform: uppercase;
-  color: var(--moss-lt);
-  margin-bottom: 1.2rem;
+  font-size: .7rem; font-weight: 500; letter-spacing: .22em; text-transform: uppercase;
+  color: var(--moss-lt); margin-bottom: 1.2rem;
   animation: fadeUp .8s ease both .1s;
 }
-
 .hero h1 {
   font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(4rem, 10vw, 8rem);
-  font-weight: 300;
-  line-height: 1;
-  color: var(--bark);
-  letter-spacing: -.01em;
+  font-size: clamp(4rem, 10vw, 8rem); font-weight: 300; line-height: 1;
+  color: var(--bark); letter-spacing: -.01em;
   animation: fadeUp .8s ease both .2s;
 }
 .hero h1 .amp {
-  font-style: italic;
-  color: var(--gold);
-  font-weight: 300;
-  display: block;
-  font-size: .55em;
-  line-height: 1.6;
+  font-style: italic; color: var(--gold); font-weight: 300;
+  display: block; font-size: .55em; line-height: 1.6;
 }
-
 .hero-location {
-  font-size: .82rem;
-  font-weight: 400;
-  letter-spacing: .18em;
-  text-transform: uppercase;
-  color: var(--muted);
-  margin-top: 1.5rem;
+  font-size: .8rem; font-weight: 400; letter-spacing: .18em; text-transform: uppercase;
+  color: var(--muted); margin-top: 1.5rem;
   animation: fadeUp .8s ease both .35s;
 }
-
 .hero-divider {
   width: 60px; height: 1px;
   background: linear-gradient(90deg, transparent, var(--gold), transparent);
-  margin: 2rem auto;
-  animation: fadeUp .8s ease both .45s;
+  margin: 2rem auto; animation: fadeUp .8s ease both .45s;
 }
-
-.countdown {
-  display: flex; gap: 2.5rem;
-  animation: fadeUp .8s ease both .55s;
-}
+.countdown { display: flex; gap: 2.5rem; animation: fadeUp .8s ease both .55s; }
 .countdown-item { text-align: center; }
 .countdown-num {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 3rem; font-weight: 300;
-  color: var(--bark); line-height: 1;
-  display: block;
+  font-family: 'Cormorant Garamond', serif; font-size: 3rem; font-weight: 300;
+  color: var(--bark); line-height: 1; display: block;
 }
 .countdown-label {
-  font-size: .65rem; font-weight: 500;
-  letter-spacing: .15em; text-transform: uppercase;
-  color: var(--moss-lt); margin-top: .3rem;
-  display: block;
+  font-size: .63rem; font-weight: 500; letter-spacing: .15em; text-transform: uppercase;
+  color: var(--moss-lt); margin-top: .3rem; display: block;
 }
-
 .hero-scroll {
   position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%);
   display: flex; flex-direction: column; align-items: center; gap: .5rem;
-  color: var(--stone); font-size: .68rem; letter-spacing: .15em; text-transform: uppercase;
+  color: var(--stone); font-size: .65rem; letter-spacing: .15em; text-transform: uppercase;
   animation: fadeUp .8s ease both .7s;
 }
-.scroll-line {
-  width: 1px; height: 40px;
-  background: linear-gradient(to bottom, var(--stone), transparent);
-  animation: scrollPulse 2s ease infinite;
-}
+.scroll-line { width: 1px; height: 40px; background: linear-gradient(to bottom, var(--stone), transparent); animation: scrollPulse 2s ease infinite; }
 
-/* ─── SECTION BASE ─── */
+/* ── SECTIONS ── */
 section { padding: 6rem 5%; }
-
-.section-ornament {
-  display: flex; align-items: center; gap: 1rem;
-  margin-bottom: .75rem;
-}
-.ornament-line { flex: 1; height: 1px; background: var(--warm); }
-.ornament-icon { color: var(--gold); font-size: .9rem; }
-
 .section-label {
-  font-size: .7rem; font-weight: 500;
-  letter-spacing: .2em; text-transform: uppercase;
-  color: var(--moss-lt);
-  text-align: center; margin-bottom: .6rem;
+  font-size: .7rem; font-weight: 500; letter-spacing: .2em; text-transform: uppercase;
+  color: var(--moss-lt); text-align: center; margin-bottom: .6rem;
 }
-
 h2 {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(2rem, 4vw, 3rem);
-  font-weight: 400;
-  color: var(--bark);
-  letter-spacing: -.01em;
-  line-height: 1.2;
+  font-family: 'Cormorant Garamond', serif; font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 400; color: var(--bark); letter-spacing: -.01em; line-height: 1.2;
 }
 
-/* ─── OUR STORY ─── */
-.story {
-  background: var(--linen);
-  position: relative;
-  overflow: hidden;
-}
+/* ── STORY ── */
+.story { background: var(--linen); position: relative; overflow: hidden; }
 .story::before {
-  content: '';
-  position: absolute; top: 0; left: 0; right: 0;
-  height: 4px;
-  background: linear-gradient(90deg, var(--moss), var(--gold), var(--moss));
+  content: ''; position: absolute; top: 0; left: 0; right: 0;
+  height: 4px; background: linear-gradient(90deg, var(--moss), var(--gold), var(--moss));
 }
-
 .story-inner {
   max-width: 900px; margin: 0 auto;
   display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start;
 }
-
 .story-text { padding-top: 1rem; }
 .story-text h2 { margin-bottom: 1.5rem; }
-.story-text p {
-  font-size: .95rem; line-height: 1.9; color: var(--muted);
-  margin-bottom: 1rem; font-weight: 300;
-}
-
-.story-photos {
-  display: grid; grid-template-rows: 1fr 1fr; gap: 1rem; height: 480px;
-}
-
+.story-text p { font-size: .95rem; line-height: 1.9; color: var(--muted); margin-bottom: 1rem; font-weight: 300; }
+.story-photos { display: grid; grid-template-rows: 1fr 1fr; gap: 1rem; height: 480px; }
 .photo-placeholder {
-  background: var(--warm);
-  border-radius: 12px;
-  display: flex; align-items: center; justify-content: center;
+  background: var(--warm); border-radius: 12px;
   overflow: hidden; position: relative;
 }
 .photo-placeholder:first-child { border-radius: 80px 12px 12px 12px; }
 .photo-placeholder:last-child { border-radius: 12px 12px 80px 12px; }
-
+.photo-placeholder img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .photo-inner {
-  width: 100%; height: 100%;
-  display: flex; align-items: center; justify-content: center;
-  flex-direction: column; gap: .5rem;
-  color: var(--stone);
+  width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;
+  flex-direction: column; gap: .5rem; color: var(--stone);
 }
 .photo-inner svg { opacity: .4; }
-.photo-inner span { font-size: .75rem; letter-spacing: .1em; text-transform: uppercase; opacity: .6; }
+.photo-inner span { font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; opacity: .6; }
 
-/* ─── DATE & PLACE ─── */
+/* ── DETAILS ── */
 .details {
-  background: var(--bark);
-  color: #fff;
-  text-align: center;
-  position: relative;
-  overflow: hidden;
+  background: var(--bark); color: #fff; text-align: center;
+  position: relative; overflow: hidden;
 }
 .details::before {
-  content: '';
-  position: absolute; inset: 0;
+  content: ''; position: absolute; inset: 0;
   background:
     radial-gradient(ellipse 70% 50% at 20% 50%, rgba(90,107,74,.3) 0%, transparent 60%),
     radial-gradient(ellipse 50% 40% at 80% 50%, rgba(184,148,90,.2) 0%, transparent 60%);
 }
-
-.details-inner { position: relative; max-width: 900px; margin: 0 auto; }
-
+.details-inner { position: relative; max-width: 960px; margin: 0 auto; }
 .details h2 { color: var(--gold-lt); margin-bottom: 1rem; }
-.details .subtitle { color: rgba(255,255,255,.55); font-size: .85rem; letter-spacing: .12em; text-transform: uppercase; margin-bottom: 3.5rem; }
-
+.details .subtitle { color: rgba(255,255,255,.5); font-size: .82rem; letter-spacing: .12em; text-transform: uppercase; margin-bottom: 3.5rem; }
 .details-grid {
   display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px;
   background: rgba(255,255,255,.1);
-  border: 1px solid rgba(255,255,255,.1);
-  border-radius: 16px; overflow: hidden;
+  border: 1px solid rgba(255,255,255,.1); border-radius: 16px; overflow: hidden;
 }
-
-.detail-item {
-  background: rgba(255,255,255,.04);
-  padding: 2.5rem 2rem;
-  transition: background .25s;
-}
+.detail-item { background: rgba(255,255,255,.04); padding: 2.2rem 1.75rem; transition: background .25s; }
 .detail-item:hover { background: rgba(255,255,255,.09); }
-
-.detail-icon { font-size: 1.6rem; margin-bottom: 1rem; opacity: .8; }
+.detail-icon { font-size: 1.5rem; margin-bottom: .9rem; opacity: .8; }
 .detail-item h3 {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 1.4rem; font-weight: 400;
+  font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; font-weight: 400;
   color: var(--gold-lt); margin-bottom: .4rem;
 }
-.detail-item p { font-size: .85rem; color: rgba(255,255,255,.55); line-height: 1.65; font-weight: 300; }
+.detail-item p { font-size: .83rem; color: rgba(255,255,255,.55); line-height: 1.65; font-weight: 300; }
+.detail-item a { color: var(--gold-lt); text-decoration: underline; text-underline-offset: 3px; }
 
-.map-btn {
-  display: inline-block; margin-top: 2.5rem;
-  background: none; border: 1px solid rgba(255,255,255,.25);
-  color: rgba(255,255,255,.7);
-  padding: .7rem 1.8rem; border-radius: 8px;
-  font-family: 'Jost', sans-serif;
-  font-size: .78rem; font-weight: 500; letter-spacing: .12em; text-transform: uppercase;
-  cursor: pointer; text-decoration: none;
-  transition: all .25s;
+/* Maps section */
+.maps-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 2.5rem;
 }
-.map-btn:hover { background: rgba(255,255,255,.1); border-color: var(--gold-lt); color: var(--gold-lt); }
+.map-card { border-radius: 14px; overflow: hidden; position: relative; }
+.map-card iframe { width: 100%; height: 240px; border: none; display: block; }
+.map-label {
+  background: rgba(61,46,30,.85); backdrop-filter: blur(8px);
+  padding: .75rem 1.1rem;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.map-label span { font-size: .8rem; color: var(--gold-lt); font-weight: 500; }
+.map-label a {
+  font-size: .72rem; color: rgba(255,255,255,.5); text-decoration: none;
+  letter-spacing: .08em; text-transform: uppercase;
+  transition: color .2s;
+}
+.map-label a:hover { color: var(--gold-lt); }
 
-/* ─── PROGRAM / HARMONOGRAM ─── */
-.program {
-  background: var(--cream);
-}
+/* ── PROGRAM ── */
+.program { background: var(--cream); }
 .program-inner { max-width: 700px; margin: 0 auto; }
 .program h2 { text-align: center; margin-bottom: .5rem; }
 .program .lead { text-align: center; color: var(--muted); font-size: .9rem; margin-bottom: 3.5rem; font-weight: 300; }
-
 .timeline { position: relative; padding-left: 2rem; }
 .timeline::before {
-  content: '';
-  position: absolute; left: 0; top: .5rem; bottom: .5rem;
+  content: ''; position: absolute; left: 0; top: .5rem; bottom: .5rem;
   width: 1px; background: linear-gradient(to bottom, var(--gold), var(--moss), var(--gold));
 }
-
-.timeline-item {
-  position: relative;
-  padding: 0 0 2.5rem 2.5rem;
-}
+.timeline-item { position: relative; padding: 0 0 2.5rem 2.5rem; }
 .timeline-item::before {
-  content: '';
-  position: absolute; left: -4px; top: .45rem;
-  width: 9px; height: 9px;
-  border-radius: 50%;
-  background: var(--gold);
-  border: 2px solid var(--cream);
-  box-shadow: 0 0 0 1px var(--gold);
+  content: ''; position: absolute; left: -4px; top: .45rem;
+  width: 9px; height: 9px; border-radius: 50%;
+  background: var(--gold); border: 2px solid var(--cream); box-shadow: 0 0 0 1px var(--gold);
+}
+.timeline-time { font-size: .68rem; font-weight: 500; letter-spacing: .15em; text-transform: uppercase; color: var(--moss-lt); margin-bottom: .2rem; }
+.timeline-item h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; font-weight: 400; color: var(--bark); margin-bottom: .3rem; }
+.timeline-item p { font-size: .87rem; color: var(--muted); line-height: 1.65; font-weight: 300; }
+.program-note {
+  background: var(--linen); border: 1px solid var(--warm); border-left: 3px solid var(--gold);
+  border-radius: 0 10px 10px 0; padding: 1.2rem 1.5rem; margin-top: 1rem;
+  font-size: .85rem; color: var(--muted); line-height: 1.65;
 }
 
-.timeline-time {
-  font-size: .7rem; font-weight: 500; letter-spacing: .15em;
-  text-transform: uppercase; color: var(--moss-lt); margin-bottom: .2rem;
+/* ── QR / GALLERY ── */
+.gallery-section { background: var(--linen); text-align: center; }
+.gallery-inner { max-width: 600px; margin: 0 auto; }
+.gallery-inner h2 { margin-bottom: .5rem; }
+.gallery-inner .lead { color: var(--muted); font-size: .9rem; margin-bottom: 2.5rem; font-weight: 300; }
+#qrcode {
+  display: inline-block;
+  padding: 1.5rem; background: #fff;
+  border-radius: 16px; box-shadow: 0 8px 32px rgba(61,46,30,.12);
+  margin-bottom: 1.25rem;
 }
-.timeline-item h3 {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 1.3rem; font-weight: 400;
-  color: var(--bark); margin-bottom: .3rem;
+.qr-caption { font-size: .8rem; color: var(--muted); letter-spacing: .05em; }
+.qr-link {
+  display: inline-block; margin-top: 1.25rem;
+  color: var(--moss); font-size: .82rem; text-decoration: none; font-weight: 500;
+  border-bottom: 1px solid var(--moss-lt); padding-bottom: 2px;
+  transition: color .2s;
 }
-.timeline-item p { font-size: .88rem; color: var(--muted); line-height: 1.65; font-weight: 300; }
+.qr-link:hover { color: var(--bark); }
 
-/* ─── RSVP ─── */
-.rsvp {
-  background: var(--linen);
-  position: relative;
-}
+/* ── RSVP ── */
+.rsvp { background: var(--cream); position: relative; }
 .rsvp::after {
-  content: '';
-  position: absolute; bottom: 0; left: 0; right: 0;
-  height: 3px;
-  background: linear-gradient(90deg, var(--moss), var(--gold), var(--moss));
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0;
+  height: 3px; background: linear-gradient(90deg, var(--moss), var(--gold), var(--moss));
 }
-
-.rsvp-inner { max-width: 600px; margin: 0 auto; text-align: center; }
+.rsvp-inner { max-width: 620px; margin: 0 auto; text-align: center; }
 .rsvp h2 { margin-bottom: .5rem; }
 .rsvp .lead { color: var(--muted); font-size: .9rem; margin-bottom: 2.5rem; font-weight: 300; }
 
-.form-group { margin-bottom: 1.25rem; text-align: left; }
+.form-group { margin-bottom: 1.2rem; text-align: left; }
 .form-group label {
-  display: block;
-  font-size: .72rem; font-weight: 500; letter-spacing: .12em; text-transform: uppercase;
-  color: var(--muted); margin-bottom: .45rem;
+  display: block; font-size: .7rem; font-weight: 500; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--muted); margin-bottom: .4rem;
 }
-.form-group input,
-.form-group select,
-.form-group textarea {
-  width: 100%;
-  background: var(--cream);
-  border: 1.5px solid var(--warm);
-  border-radius: 10px;
-  padding: .85rem 1.1rem;
-  font-family: 'Jost', sans-serif;
-  font-size: .92rem; font-weight: 300;
-  color: var(--text);
-  transition: border-color .2s, box-shadow .2s;
-  outline: none;
+.form-group input, .form-group select, .form-group textarea {
+  width: 100%; background: var(--linen); border: 1.5px solid var(--warm);
+  border-radius: 10px; padding: .8rem 1rem;
+  font-family: 'Jost', sans-serif; font-size: .9rem; font-weight: 300;
+  color: var(--text); transition: border-color .2s, box-shadow .2s; outline: none;
   -webkit-appearance: none;
 }
-.form-group input:focus,
-.form-group select:focus,
-.form-group textarea:focus {
-  border-color: var(--moss-lt);
-  box-shadow: 0 0 0 3px rgba(90,107,74,.1);
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+  border-color: var(--moss-lt); box-shadow: 0 0 0 3px rgba(90,107,74,.1);
 }
-.form-group textarea { resize: vertical; min-height: 90px; }
-
+.form-group textarea { resize: vertical; min-height: 80px; }
 .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
 
-.rsvp-radios {
-  display: flex; gap: .75rem; margin-top: .25rem;
-}
+.rsvp-radios { display: flex; gap: .75rem; margin-top: .25rem; }
 .rsvp-radio {
-  flex: 1;
-  border: 1.5px solid var(--warm);
-  border-radius: 10px;
-  padding: .75rem;
-  cursor: pointer;
-  text-align: center;
-  font-size: .85rem; font-weight: 400;
-  color: var(--muted);
-  transition: all .2s;
-  background: var(--cream);
+  flex: 1; border: 1.5px solid var(--warm); border-radius: 10px; padding: .7rem;
+  cursor: pointer; text-align: center; font-size: .83rem; font-weight: 400;
+  color: var(--muted); transition: all .2s; background: var(--linen);
 }
-.rsvp-radio:hover, .rsvp-radio.selected {
-  border-color: var(--moss);
-  background: rgba(90,107,74,.07);
-  color: var(--moss);
+.rsvp-radio:hover { border-color: var(--moss); background: rgba(90,107,74,.06); color: var(--moss); }
+.rsvp-radio.selected { border-color: var(--moss); background: rgba(90,107,74,.08); color: var(--moss); font-weight: 500; }
+.rsvp-radio.selected-no { border-color: var(--stone); background: rgba(181,168,152,.1); color: var(--muted); }
+
+/* Accommodation options */
+.accommodation-options { display: grid; grid-template-columns: 1fr 1fr; gap: .6rem; margin-top: .4rem; }
+.acc-option {
+  border: 1.5px solid var(--warm); border-radius: 8px; padding: .6rem .9rem;
+  cursor: pointer; font-size: .83rem; color: var(--muted); background: var(--linen);
+  transition: all .2s; display: flex; align-items: center; gap: .5rem;
 }
-.rsvp-radio.selected-no {
-  border-color: var(--stone);
-  background: rgba(181,168,152,.1);
-  color: var(--muted);
+.acc-option:hover { border-color: var(--moss-lt); color: var(--bark); }
+.acc-option.selected { border-color: var(--moss); background: rgba(90,107,74,.08); color: var(--moss); font-weight: 500; }
+.acc-note {
+  font-size: .75rem; color: var(--stone); margin-top: .6rem; line-height: 1.5;
+  background: rgba(181,168,152,.1); border-radius: 8px; padding: .5rem .75rem;
+  border-left: 2px solid var(--stone);
 }
 
 .btn-submit {
-  width: 100%;
-  background: var(--bark);
-  color: #fff;
-  border: none;
-  padding: 1rem;
-  border-radius: 10px;
-  font-family: 'Jost', sans-serif;
-  font-size: .85rem; font-weight: 500; letter-spacing: .1em; text-transform: uppercase;
-  cursor: pointer;
-  margin-top: .75rem;
+  width: 100%; background: var(--bark); color: #fff; border: none;
+  padding: 1rem; border-radius: 10px;
+  font-family: 'Jost', sans-serif; font-size: .82rem; font-weight: 500;
+  letter-spacing: .1em; text-transform: uppercase; cursor: pointer; margin-top: .75rem;
   transition: background .2s, transform .15s, box-shadow .2s;
   box-shadow: 0 4px 20px rgba(61,46,30,.2);
 }
 .btn-submit:hover { background: var(--moss); transform: translateY(-2px); box-shadow: 0 8px 28px rgba(61,46,30,.25); }
+.btn-submit:disabled { opacity: .6; cursor: not-allowed; transform: none; }
 
-.rsvp-note { font-size: .78rem; color: var(--stone); margin-top: 1rem; }
+.rsvp-note-small { font-size: .75rem; color: var(--stone); margin-top: .75rem; }
 
-/* SUCCESS STATE */
-.rsvp-success {
-  display: none;
-  text-align: center;
-  padding: 3rem 2rem;
-}
+.rsvp-success { display: none; text-align: center; padding: 3rem 2rem; }
 .rsvp-success .icon { font-size: 3rem; margin-bottom: 1rem; }
-.rsvp-success h3 {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 2rem; font-weight: 400; color: var(--bark); margin-bottom: .75rem;
-}
+.rsvp-success h3 { font-family: 'Cormorant Garamond', serif; font-size: 2rem; font-weight: 400; color: var(--bark); margin-bottom: .75rem; }
 .rsvp-success p { font-size: .9rem; color: var(--muted); line-height: 1.7; font-weight: 300; }
 
-/* ─── FOOTER ─── */
-footer {
-  background: var(--bark);
-  color: rgba(255,255,255,.5);
-  text-align: center;
-  padding: 3rem 5%;
-}
-.footer-monogram {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 2.5rem; font-weight: 300; font-style: italic;
-  color: var(--gold-lt); margin-bottom: .5rem;
-}
-footer p { font-size: .78rem; letter-spacing: .08em; }
+/* ── FOOTER ── */
+footer { background: var(--bark); color: rgba(255,255,255,.45); text-align: center; padding: 3rem 5%; }
+.footer-monogram { font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; font-weight: 300; font-style: italic; color: var(--gold-lt); margin-bottom: .5rem; }
+footer p { font-size: .76rem; letter-spacing: .06em; }
 
-/* ─── LANGUAGE LAYERS ─── */
-[data-en] { display: none; }
+/* ── LANGUAGE ── */
+[data-en], [data-pl] { display: none; }
 body.lang-en [data-cs] { display: none; }
 body.lang-en [data-en] { display: block; }
 body.lang-en span[data-en] { display: inline; }
 body.lang-en span[data-cs] { display: none; }
+body.lang-pl [data-cs] { display: none; }
+body.lang-pl [data-pl] { display: block; }
+body.lang-pl span[data-pl] { display: inline; }
+body.lang-pl span[data-cs] { display: none; }
 
-/* ─── ANIMATIONS ─── */
+/* ── ANIMATIONS ── */
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(20px); }
   to   { opacity: 1; transform: translateY(0); }
 }
-@keyframes scrollPulse {
-  0%, 100% { opacity: .4; }
-  50% { opacity: 1; }
-}
-
-.reveal {
-  opacity: 0; transform: translateY(28px);
-  transition: opacity .7s ease, transform .7s ease;
-}
+@keyframes scrollPulse { 0%,100% { opacity:.4; } 50% { opacity:1; } }
+.reveal { opacity: 0; transform: translateY(28px); transition: opacity .7s ease, transform .7s ease; }
 .reveal.visible { opacity: 1; transform: translateY(0); }
 
-/* ─── RESPONSIVE ─── */
-@media (max-width: 768px) {
+/* ── RESPONSIVE ── */
+@media (max-width: 800px) {
   .nav-links { display: none; }
   .story-inner { grid-template-columns: 1fr; gap: 2.5rem; }
-  .story-photos { height: 300px; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr; }
+  .story-photos { height: 280px; grid-template-rows: 1fr; grid-template-columns: 1fr 1fr; }
   .details-grid { grid-template-columns: 1fr; }
+  .maps-grid { grid-template-columns: 1fr; }
   .form-row { grid-template-columns: 1fr; }
   .countdown { gap: 1.5rem; }
   .countdown-num { font-size: 2rem; }
   .botanical-left, .botanical-right { display: none; }
+  .accommodation-options { grid-template-columns: 1fr; }
 }
 </style>
 </head>
 <body>
 
+<!-- ══ PASSWORD SCREEN ══ -->
+<div id="password-screen">
+  <div class="pw-monogram">Eva & Josef</div>
+  <div class="pw-sub">20. června 2026 · Nové Hamry</div>
+  <div class="pw-label" data-cs>Zadejte heslo pro přístup</div>
+  <div class="pw-label" data-en>Enter password to access</div>
+  <div class="pw-label" data-pl>Wpisz hasło, aby uzyskać dostęp</div>
+  <input type="password" id="pw-input" placeholder="heslo…" autocomplete="off">
+  <button id="pw-btn" onclick="checkPassword()">
+    <span data-cs>Vstoupit</span>
+    <span data-en>Enter</span>
+    <span data-pl>Wejdź</span>
+  </button>
+  <div id="pw-error">
+    <span data-cs>Nesprávné heslo. Zkuste to znovu.</span>
+    <span data-en>Incorrect password. Please try again.</span>
+    <span data-pl>Nieprawidłowe hasło. Spróbuj ponownie.</span>
+  </div>
+  <div class="pw-hint" data-cs>Heslo najdete na vaší pozvánce 🌿</div>
+  <div class="pw-hint" data-en>Find the password on your invitation 🌿</div>
+  <div class="pw-hint" data-pl>Hasło znajdziesz na swoim zaproszeniu 🌿</div>
+
+  <div style="position:absolute;bottom:1.5rem;right:1.5rem;">
+    <div class="lang-toggle">
+      <button class="lang-btn active" onclick="setLang('cs')">CS</button>
+      <button class="lang-btn" onclick="setLang('en')">EN</button>
+      <button class="lang-btn" onclick="setLang('pl')">PL</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MAIN CONTENT ══ -->
+<div id="main-content">
+
 <!-- NAV -->
 <nav>
   <div class="nav-monogram">E &amp; J</div>
   <ul class="nav-links">
-    <li><a href="#story" data-cs>Náš příběh</a><a href="#story" data-en>Our Story</a></li>
-    <li><a href="#details" data-cs>Místo &amp; čas</a><a href="#details" data-en>Details</a></li>
-    <li><a href="#program" data-cs>Program</a><a href="#program" data-en>Schedule</a></li>
+    <li><a href="#story"><span data-cs>Náš příběh</span><span data-en>Our Story</span><span data-pl>Nasza historia</span></a></li>
+    <li><a href="#details"><span data-cs>Místo</span><span data-en>Venue</span><span data-pl>Miejsce</span></a></li>
+    <li><a href="#program"><span data-cs>Program</span><span data-en>Schedule</span><span data-pl>Program</span></a></li>
+    <li><a href="#gallery"><span data-cs>Fotky</span><span data-en>Photos</span><span data-pl>Zdjęcia</span></a></li>
     <li><a href="#rsvp">RSVP</a></li>
   </ul>
   <div class="lang-toggle">
     <button class="lang-btn active" onclick="setLang('cs')">CS</button>
     <button class="lang-btn" onclick="setLang('en')">EN</button>
+    <button class="lang-btn" onclick="setLang('pl')">PL</button>
   </div>
 </nav>
 
-<!-- BOTANICAL SVG decorations -->
+<!-- BOTANICAL SVGs -->
 <svg class="botanical-left" viewBox="0 0 200 600" fill="none" xmlns="http://www.w3.org/2000/svg">
   <path d="M100 580 C100 400 20 300 60 180 S140 80 100 20" stroke="#5a6b4a" stroke-width="2" fill="none"/>
   <path d="M100 400 C70 380 30 360 10 320" stroke="#5a6b4a" stroke-width="1.5" fill="none"/>
@@ -541,9 +480,7 @@ body.lang-en span[data-cs] { display: none; }
   <path d="M100 230 C135 210 158 185 165 150" stroke="#5a6b4a" stroke-width="1.5" fill="none"/>
   <ellipse cx="165" cy="145" rx="16" ry="9" fill="#5a6b4a" transform="rotate(30 165 145)"/>
   <circle cx="100" cy="20" r="5" fill="#b8945a"/>
-  <circle cx="60" cy="180" r="3" fill="#b8945a"/>
 </svg>
-
 <svg class="botanical-right" viewBox="0 0 200 600" fill="none" xmlns="http://www.w3.org/2000/svg">
   <path d="M100 580 C100 400 20 300 60 180 S140 80 100 20" stroke="#5a6b4a" stroke-width="2" fill="none"/>
   <path d="M100 400 C70 380 30 360 10 320" stroke="#5a6b4a" stroke-width="1.5" fill="none"/>
@@ -559,252 +496,323 @@ body.lang-en span[data-cs] { display: none; }
 
 <!-- HERO -->
 <section class="hero">
-  <div class="hero-date" data-cs>20. června 2026 · Nové Hamry</div>
-  <div class="hero-date" data-en>June 20, 2026 · Nové Hamry</div>
-
-  <h1>
-    Eva
-    <span class="amp">&amp;</span>
-    Josef
-  </h1>
-
-  <div class="hero-location" data-cs>Nové Hamry u Karlových Varů, Česká republika</div>
-  <div class="hero-location" data-en>Nové Hamry near Karlovy Vary, Czech Republic</div>
-
+  <div class="hero-date">
+    <span data-cs>20. června 2026 · Nové Hamry</span>
+    <span data-en>June 20, 2026 · Nové Hamry</span>
+    <span data-pl>20 czerwca 2026 · Nové Hamry</span>
+  </div>
+  <h1>Eva <span class="amp">&amp;</span> Josef</h1>
+  <div class="hero-location">
+    <span data-cs>Nové Hamry u Karlových Varů · Krušné hory</span>
+    <span data-en>Nové Hamry near Karlovy Vary · Ore Mountains</span>
+    <span data-pl>Nové Hamry koło Karlowych Warów · Góry Rudawskie</span>
+  </div>
   <div class="hero-divider"></div>
-
-  <div class="countdown" id="countdown">
+  <div class="countdown">
     <div class="countdown-item">
       <span class="countdown-num" id="cd-days">—</span>
-      <span class="countdown-label" data-cs>dní</span>
-      <span class="countdown-label" data-en>days</span>
+      <span class="countdown-label"><span data-cs>dní</span><span data-en>days</span><span data-pl>dni</span></span>
     </div>
     <div class="countdown-item">
       <span class="countdown-num" id="cd-hours">—</span>
-      <span class="countdown-label" data-cs>hodin</span>
-      <span class="countdown-label" data-en>hours</span>
+      <span class="countdown-label"><span data-cs>hodin</span><span data-en>hours</span><span data-pl>godzin</span></span>
     </div>
     <div class="countdown-item">
       <span class="countdown-num" id="cd-min">—</span>
-      <span class="countdown-label" data-cs>minut</span>
-      <span class="countdown-label" data-en>minutes</span>
+      <span class="countdown-label"><span data-cs>minut</span><span data-en>minutes</span><span data-pl>minut</span></span>
     </div>
     <div class="countdown-item">
       <span class="countdown-num" id="cd-sec">—</span>
-      <span class="countdown-label" data-cs>sekund</span>
-      <span class="countdown-label" data-en>seconds</span>
+      <span class="countdown-label"><span data-cs>sekund</span><span data-en>seconds</span><span data-pl>sekund</span></span>
     </div>
   </div>
-
   <div class="hero-scroll">
-    <span data-cs>Scroll</span><span data-en>Scroll</span>
+    <span>Scroll</span>
     <div class="scroll-line"></div>
   </div>
 </section>
 
-<!-- OUR STORY -->
+<!-- STORY -->
 <section class="story reveal" id="story">
   <div class="story-inner">
     <div class="story-text">
-      <div class="section-label" data-cs>Náš příběh</div>
-      <div class="section-label" data-en>Our Story</div>
-      <h2 data-cs>Jak to všechno začalo</h2>
-      <h2 data-en>How It All Began</h2>
+      <div class="section-label"><span data-cs>Náš příběh</span><span data-en>Our Story</span><span data-pl>Nasza historia</span></div>
+      <h2><span data-cs>Jak to všechno začalo</span><span data-en>How It All Began</span><span data-pl>Jak to się zaczęło</span></h2>
       <p data-cs>Potkali jsme se na jednom z těch nečekaných míst, kde vás život někdy překvapí. Od prvního okamžiku bylo jasné, že je v tom něco víc než jen náhoda.</p>
       <p data-en>We met in one of those unexpected places where life sometimes surprises you. From the very first moment it was clear that there was something more than just coincidence.</p>
-      <p data-cs>Sdílejeme lásku k přírodě, tichým lesním cestám a ranní kávě s výhledem na hory. A právě proto jsme si pro naši svatbu vybrali místo, které to všechno ztělesňuje – krásné Krušnohoří.</p>
-      <p data-en>We share a love of nature, quiet forest paths and morning coffee with a mountain view. That's exactly why we chose a place that embodies all of this for our wedding – the beautiful Ore Mountains.</p>
+      <p data-pl>Spotkaliśmy się w jednym z tych nieoczekiwanych miejsc, w których życie czasem nas zaskakuje. Od pierwszej chwili było jasne, że to coś więcej niż przypadek.</p>
+      <p data-cs>Sdílejeme lásku k přírodě, tichým lesním cestám a ranní kávě s výhledem na hory. A právě proto jsme si pro naši svatbu vybrali místo, které to vše ztělesňuje – krásné Krušnohoří.</p>
+      <p data-en>We share a love of nature, quiet forest paths and morning coffee with a mountain view. That's exactly why we chose a place that embodies all of this – the beautiful Ore Mountains.</p>
+      <p data-pl>Łączy nas miłość do natury, leśnych ścieżek i porannej kawy z widokiem na góry. Dlatego właśnie wybraliśmy to wyjątkowe miejsce – piękne Góry Rudawskie.</p>
       <p data-cs>Jsme rádi, že tento výjimečný den prožijeme právě s vámi. 🌿</p>
       <p data-en>We're so happy to share this special day with you. 🌿</p>
+      <p data-pl>Cieszymy się, że ten wyjątkowy dzień spędzimy właśnie z Wami. 🌿</p>
     </div>
     <div class="story-photos">
-      <div class="photo-placeholder">
-        <div class="photo-inner">
-          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#b5a898" stroke-width="1.5">
-            <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/>
-            <polyline points="21,15 16,10 5,21"/>
-          </svg>
-          <span data-cs>Vaše foto</span><span data-en>Your photo</span>
-        </div>
+      <div class="photo-placeholder" id="photo1">
+        <img src="foto1.jpg" alt="Eva & Josef">
       </div>
-      <div class="photo-placeholder">
-        <div class="photo-inner">
-          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#b5a898" stroke-width="1.5">
-            <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/>
-            <polyline points="21,15 16,10 5,21"/>
-          </svg>
-          <span data-cs>Vaše foto</span><span data-en>Your photo</span>
-        </div>
+      <div class="photo-placeholder" id="photo2">
+        <img src="foto2.jpg" alt="Eva & Josef">
       </div>
     </div>
   </div>
 </section>
 
-<!-- DETAILS -->
+<!-- DETAILS & MAPS -->
 <section class="details reveal" id="details">
   <div class="details-inner">
-    <div class="section-label" style="color:rgba(255,255,255,.4);" data-cs>Datum &amp; Místo</div>
-    <div class="section-label" style="color:rgba(255,255,255,.4);" data-en>Date &amp; Venue</div>
-    <h2 data-cs>Kdy a kde nás najdete</h2>
-    <h2 data-en>When &amp; Where to Find Us</h2>
-    <p class="subtitle" data-cs>Těšíme se na každého z vás</p>
-    <p class="subtitle" data-en>We look forward to seeing each of you</p>
-
+    <div class="section-label" style="color:rgba(255,255,255,.4);">
+      <span data-cs>Datum & Místo</span><span data-en>Date & Venue</span><span data-pl>Data i Miejsce</span>
+    </div>
+    <h2><span data-cs>Kdy a kde nás najdete</span><span data-en>When & Where to Find Us</span><span data-pl>Kiedy i gdzie nas znajdziecie</span></h2>
+    <p class="subtitle">
+      <span data-cs>Těšíme se na každého z vás</span>
+      <span data-en>We look forward to seeing each of you</span>
+      <span data-pl>Czekamy na każdego z Was</span>
+    </p>
     <div class="details-grid">
       <div class="detail-item">
         <div class="detail-icon">📅</div>
-        <h3 data-cs>Datum</h3>
-        <h3 data-en>Date</h3>
-        <p data-cs>Sobota<br>20. června 2026</p>
-        <p data-en>Saturday<br>June 20, 2026</p>
+        <h3><span data-cs>Datum</span><span data-en>Date</span><span data-pl>Data</span></h3>
+        <p data-cs>Sobota<br>20. června 2026<br>Začínáme ve 13:00</p>
+        <p data-en>Saturday<br>June 20, 2026<br>Starting at 1:00 PM</p>
+        <p data-pl>Sobota<br>20 czerwca 2026<br>Zaczynamy o 13:00</p>
+      </div>
+      <div class="detail-item">
+        <div class="detail-icon">👗</div>
+        <h3><span data-cs>Dress code</span><span data-en>Dress code</span><span data-pl>Dress code</span></h3>
+        <p data-cs>Oblečte si to, co vám bude pohodlné, jen bychom byli rádi, kdybyste zařadili nějaký modrý detail či část oblečení.</p>
+        <p data-en>Wear whatever you feel comfortable in — we'd just love it if you included a blue detail or piece of clothing.</p>
+        <p data-pl>Ubierzcie się wygodnie, ale będziemy wdzięczni, jeśli dodacie jakiś niebieski element lub część stroju.</p>
       </div>
       <div class="detail-item">
         <div class="detail-icon">🌲</div>
-        <h3 data-cs>Místo</h3>
-        <h3 data-en>Venue</h3>
-        <p data-cs>Nové Hamry<br>u Karlových Varů<br>Krušné hory</p>
-        <p data-en>Nové Hamry<br>near Karlovy Vary<br>Ore Mountains</p>
-      </div>
-      <div class="detail-item">
-        <div class="detail-icon">🎩</div>
-        <h3 data-cs>Dress code</h3>
-        <h3 data-en>Dress code</h3>
-        <p data-cs>Elegantní &amp; přírodní tóny<br>Zelená, béžová, zemité barvy</p>
-        <p data-en>Elegant &amp; natural tones<br>Green, beige, earthy colours</p>
+        <h3><span data-cs>Prostředí</span><span data-en>Setting</span><span data-pl>Otoczenie</span></h3>
+        <p data-cs>Příroda, Krušné hory<br>Vhodná obuv doporučena<br>Parkoviště u místa konání</p>
+        <p data-en>Nature, Ore Mountains<br>Sturdy footwear recommended<br>Parking available on site</p>
+        <p data-pl>Natura, Góry Rudawskie<br>Zalecamy wygodne obuwie<br>Parking na miejscu</p>
       </div>
     </div>
 
-    <a class="map-btn" href="https://maps.google.com/?q=Nové+Hamry+Karlovy+Vary" target="_blank" data-cs>Zobrazit na mapě →</a>
-    <a class="map-btn" href="https://maps.google.com/?q=Nové+Hamry+Karlovy+Vary" target="_blank" data-en>View on Map →</a>
+    <!-- MAPS -->
+    <div class="maps-grid">
+      <div class="map-card">
+        <iframe
+          src="https://www.google.com/maps?q=50.36528651091963,12.709279748444677&z=15&output=embed"
+          allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+        <div class="map-label">
+          <span>🎉 <span data-cs>Místo zábavy – Nové Hamry</span><span data-en>Celebration Venue</span><span data-pl>Miejsce zabawy</span></span>
+          <a href="https://maps.google.com/?q=50.36528651091963,12.709279748444677" target="_blank">
+            <span data-cs>Navigovat →</span><span data-en>Navigate →</span><span data-pl>Nawiguj →</span>
+          </a>
+        </div>
+      </div>
+      <div class="map-card">
+        <iframe
+          src="https://www.google.com/maps?q=50.395918472738984,12.670416394149264&z=15&output=embed"
+          allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+        <div class="map-label">
+          <span>💍 <span data-cs>Místo obřadu</span><span data-en>Ceremony Venue</span><span data-pl>Miejsce ceremonii</span></span>
+          <a href="https://maps.google.com/?q=50.395918472738984,12.670416394149264" target="_blank">
+            <span data-cs>Navigovat →</span><span data-en>Navigate →</span><span data-pl>Nawiguj →</span>
+          </a>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
 <!-- PROGRAM -->
 <section class="program reveal" id="program">
   <div class="program-inner">
-    <div class="section-label" data-cs>Harmonogram dne</div>
-    <div class="section-label" data-en>Schedule of the Day</div>
-    <h2 data-cs>Jak bude den vypadat</h2>
-    <h2 data-en>How the Day Will Unfold</h2>
-    <p class="lead" data-cs>Připravili jsme pro vás den plný emocí, smíchu a krásných chvil v přírodě.</p>
-    <p class="lead" data-en>We've prepared a day full of emotion, laughter and beautiful moments in nature.</p>
-
+    <div class="section-label">
+      <span data-cs>Harmonogram dne</span><span data-en>Schedule of the Day</span><span data-pl>Plan dnia</span>
+    </div>
+    <h2><span data-cs>Jak bude den vypadat</span><span data-en>How the Day Will Unfold</span><span data-pl>Jak będzie wyglądał dzień</span></h2>
+    <p class="lead">
+      <span data-cs>Připravili jsme pro vás den plný emocí, smíchu a krásných chvil v přírodě.</span>
+      <span data-en>We've prepared a day full of emotion, laughter and beautiful moments in nature.</span>
+      <span data-pl>Przygotowaliśmy dla Was dzień pełen emocji, śmiechu i pięknych chwil w naturze.</span>
+    </p>
     <div class="timeline">
       <div class="timeline-item">
         <div class="timeline-time">13:00</div>
-        <h3 data-cs>Uvítání hostů</h3>
-        <h3 data-en>Welcome of Guests</h3>
+        <h3><span data-cs>Uvítání hostů</span><span data-en>Welcome of Guests</span><span data-pl>Powitanie gości</span></h3>
         <p data-cs>Přivítáme vás proseccem a domácími limonádami. Čas na první fotky a radostné setkání.</p>
         <p data-en>We'll welcome you with prosecco and homemade lemonades. Time for first photos and joyful reunions.</p>
+        <p data-pl>Powitamy Was prosecco i domowymi lemoniadami. Czas na pierwsze zdjęcia i radosne spotkania.</p>
       </div>
       <div class="timeline-item">
         <div class="timeline-time">14:00</div>
-        <h3 data-cs>Obřad</h3>
-        <h3 data-en>Ceremony</h3>
+        <h3><span data-cs>Obřad</span><span data-en>Ceremony</span><span data-pl>Ceremonia</span></h3>
         <p data-cs>Slavnostní oddání pod širým nebem v přírodě. Prosíme, přijďte včas.</p>
         <p data-en>The official ceremony outdoors in nature. Please arrive on time.</p>
+        <p data-pl>Uroczyste zaślubiny pod gołym niebem, w naturze. Prosimy o punktualność.</p>
       </div>
       <div class="timeline-item">
         <div class="timeline-time">15:30</div>
-        <h3 data-cs>Skupinové fotografování</h3>
-        <h3 data-en>Group Photos</h3>
+        <h3><span data-cs>Skupinové fotografování</span><span data-en>Group Photos</span><span data-pl>Zdjęcia grupowe</span></h3>
         <p data-cs>Společné fotky s novomanželi a blízkými. Fotograf zachytí ty nejkrásnější okamžiky.</p>
         <p data-en>Group photos with the newlyweds and close ones. The photographer will capture the most beautiful moments.</p>
+        <p data-pl>Wspólne zdjęcia z nowożeńcami i bliskimi. Fotograf uwieczni najpiękniejsze chwile.</p>
       </div>
       <div class="timeline-item">
         <div class="timeline-time">16:30</div>
-        <h3 data-cs>Slavnostní hostina</h3>
-        <h3 data-en>Wedding Banquet</h3>
+        <h3><span data-cs>Slavnostní hostina</span><span data-en>Wedding Banquet</span><span data-pl>Uroczyste wesele</span></h3>
         <p data-cs>Večeře inspirovaná lokálními surovinami Krušnohoří. Živá hudba, přípitky, taneční parket.</p>
         <p data-en>Dinner inspired by local Ore Mountains ingredients. Live music, toasts, dance floor.</p>
+        <p data-pl>Kolacja inspirowana lokalnymi produktami Gór Rudawskich. Muzyka na żywo, toasty, parkiet.</p>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-time">18:00</div>
+        <h3>
+          <span data-cs>🎉 Doprovodný program</span>
+          <span data-en>🎉 Entertainment Programme</span>
+          <span data-pl>🎉 Program towarzyszący</span>
+        </h3>
+        <p data-cs>Připravili jsme pro vás překvapení! Podrobnosti prozradíme brzy. 😉</p>
+        <p data-en>We've prepared some surprises for you! Details coming soon. 😉</p>
+        <p data-pl>Przygotowaliśmy dla Was niespodzianki! Szczegóły wkrótce. 😉</p>
       </div>
       <div class="timeline-item">
         <div class="timeline-time">20:00</div>
-        <h3 data-cs>Krájení dortu &amp; první tanec</h3>
-        <h3 data-en>Cake Cutting &amp; First Dance</h3>
+        <h3><span data-cs>Krájení dortu & první tanec</span><span data-en>Cake Cutting & First Dance</span><span data-pl>Krojenie tortu i pierwszy taniec</span></h3>
         <p data-cs>Tradiční moment pro novomanžele a pak – tančíme až do rána!</p>
         <p data-en>A traditional moment for the newlyweds and then – we dance until morning!</p>
+        <p data-pl>Tradycyjny moment dla nowożeńców, a potem – tańczymy do rana!</p>
       </div>
     </div>
+    <div class="program-note">
+      🌿 <span data-cs>Doprovodný program ještě ladíme – sledujte tuto stránku, brzy přidáme více informací!</span>
+      <span data-en>We're still finalising the entertainment programme – check back soon for more details!</span>
+      <span data-pl>Program towarzyszący jest jeszcze dopracowywany – wkrótce dodamy więcej informacji!</span>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY / QR -->
+<section class="gallery-section reveal" id="gallery">
+  <div class="gallery-inner">
+    <div class="section-label">
+      <span data-cs>Sdílená galerie</span><span data-en>Shared Gallery</span><span data-pl>Wspólna galeria</span>
+    </div>
+    <h2><span data-cs>Sdílejte fotky ze svatby</span><span data-en>Share Your Wedding Photos</span><span data-pl>Udostępnijcie zdjęcia ze ślubu</span></h2>
+    <p class="lead">
+      <span data-cs>Naskenujte QR kód a nahrajte své fotky přímo na naše sdílené Google Drive. 📸</span>
+      <span data-en>Scan the QR code and upload your photos directly to our shared Google Drive. 📸</span>
+      <span data-pl>Zeskanuj kod QR i wgraj swoje zdjęcia bezpośrednio na nasze wspólne Google Drive. 📸</span>
+    </p>
+    <div id="qrcode"></div>
+    <p class="qr-caption">
+      <span data-cs>Naskenujte fotoaparátem telefonu</span>
+      <span data-en>Scan with your phone camera</span>
+      <span data-pl>Zeskanuj aparatem telefonu</span>
+    </p>
+    <a class="qr-link" href="https://drive.google.com/drive/folders/1oYuCCJWEo8TcM4ZbIyiQ322wXdu3AqhE" target="_blank">
+      <span data-cs>Nebo klikněte zde pro přímý přístup →</span>
+      <span data-en>Or click here for direct access →</span>
+      <span data-pl>Lub kliknij tutaj, aby uzyskać bezpośredni dostęp →</span>
+    </a>
   </div>
 </section>
 
 <!-- RSVP -->
 <section class="rsvp reveal" id="rsvp">
   <div class="rsvp-inner">
-    <div class="section-label" data-cs>Potvrďte účast</div>
-    <div class="section-label" data-en>Confirm Attendance</div>
-    <h2 data-cs>Přijdete?</h2>
-    <h2 data-en>Will You Come?</h2>
-    <p class="lead" data-cs>Prosíme o odpověď do <strong>1. dubna 2026</strong>. Velmi nám to pomůže s přípravami.</p>
-    <p class="lead" data-en>Please respond by <strong>1 April 2026</strong>. It will help us enormously with preparations.</p>
+    <div class="section-label">
+      <span data-cs>Potvrďte účast</span><span data-en>Confirm Attendance</span><span data-pl>Potwierdź obecność</span>
+    </div>
+    <h2><span data-cs>Přijdete?</span><span data-en>Will You Come?</span><span data-pl>Przyjdziecie?</span></h2>
+    <p class="lead">
+      <span data-cs>Prosíme o odpověď do <strong>1. dubna 2026</strong>.</span>
+      <span data-en>Please respond by <strong>1 April 2026</strong>.</span>
+      <span data-pl>Prosimy o odpowiedź do <strong>1 kwietnia 2026</strong>.</span>
+    </p>
 
     <form id="rsvp-form">
       <div class="form-row">
         <div class="form-group">
-          <label data-cs>Jméno a příjmení</label>
-          <label data-en>Full Name</label>
-          <input type="text" placeholder="Eva Nováková" required>
+          <label><span data-cs>Jméno a příjmení</span><span data-en>Full Name</span><span data-pl>Imię i nazwisko</span></label>
+          <input type="text" id="f-name" required placeholder="Jana Nováková">
         </div>
         <div class="form-group">
-          <label data-cs>E-mail</label>
-          <label data-en>Email</label>
-          <input type="email" placeholder="vas@email.cz" required>
+          <label><span data-cs>E-mail</span><span data-en>Email</span><span data-pl>E-mail</span></label>
+          <input type="email" id="f-email" required placeholder="vas@email.cz">
         </div>
       </div>
 
       <div class="form-group">
-        <label data-cs>Přijdu na svatbu</label>
-        <label data-en>I will attend</label>
+        <label><span data-cs>Přijdu na svatbu</span><span data-en>I will attend</span><span data-pl>Będę na weselu</span></label>
         <div class="rsvp-radios">
           <div class="rsvp-radio" id="yes-btn" onclick="selectRsvp('yes')">
-            <span data-cs>✓ &nbsp;Ano, přijdu!</span>
-            <span data-en>✓ &nbsp;Yes, I'll be there!</span>
+            ✓ &nbsp;<span data-cs>Ano, přijdu!</span><span data-en>Yes, I'll be there!</span><span data-pl>Tak, będę!</span>
           </div>
           <div class="rsvp-radio" id="no-btn" onclick="selectRsvp('no')">
-            <span data-cs>✕ &nbsp;Bohužel nepřijdu</span>
-            <span data-en>✕ &nbsp;Sorry, I can't make it</span>
+            ✕ &nbsp;<span data-cs>Bohužel nepřijdu</span><span data-en>Sorry, I can't make it</span><span data-pl>Niestety nie przyjdę</span>
           </div>
         </div>
       </div>
 
-      <div class="form-group" id="guests-group">
-        <label data-cs>Počet osob (včetně vás)</label>
-        <label data-en>Number of guests (including you)</label>
-        <select>
-          <option>1</option>
-          <option>2</option>
-          <option>3</option>
-          <option>4+</option>
-        </select>
+      <div id="yes-fields">
+        <div class="form-group">
+          <label><span data-cs>Počet osob (včetně vás)</span><span data-en>Number of guests (including you)</span><span data-pl>Liczba osób (łącznie z Wami)</span></label>
+          <select id="f-guests">
+            <option>1</option><option>2</option><option>3</option><option value="4+">4+</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label><span data-cs>Dietní omezení / alergie</span><span data-en>Dietary restrictions / allergies</span><span data-pl>Ograniczenia dietetyczne / alergie</span></label>
+          <input type="text" id="f-diet" placeholder="Vegetarián, bezlepkové, alergie…">
+        </div>
+
+        <!-- ACCOMMODATION -->
+        <div class="form-group">
+          <label><span data-cs>Ubytování – jak spíte?</span><span data-en>Accommodation – where will you sleep?</span><span data-pl>Nocleg – jak śpicie?</span></label>
+          <div class="accommodation-options" id="acc-options">
+            <div class="acc-option" onclick="selectAcc(this, 'stan')">⛺ <span data-cs>Spím ve stanu</span><span data-en>Tent</span><span data-pl>Namiot</span></div>
+            <div class="acc-option" onclick="selectAcc(this, 'karavan')">🚐 <span data-cs>Spím v autě / karavanu</span><span data-en>Car / Caravan</span><span data-pl>Auto / Karawan</span></div>
+            <div class="acc-option" onclick="selectAcc(this, 'penzion')">🏡 <span data-cs>Spím v penzionu</span><span data-en>Guest house</span><span data-pl>Pensjonat</span></div>
+            <div class="acc-option" onclick="selectAcc(this, 'fara')">⛪ <span data-cs>Spím na Faře</span><span data-en>At the Rectory</span><span data-pl>Na plebanii</span></div>
+            <div class="acc-option" onclick="selectAcc(this, 'sirak')">🌙 <span data-cs>Spím pod širákem</span><span data-en>Under the stars</span><span data-pl>Pod gołym niebem</span></div>
+            <div class="acc-option" onclick="selectAcc(this, 'nespim')">🏠 <span data-cs>Nespím – jedu domů</span><span data-en>Not staying – heading home</span><span data-pl>Nie nocuję – jadę do domu</span></div>
+          </div>
+          <div class="acc-note">
+            ℹ️ <span data-cs>Ubytování v penzionu si každý hradí sám. Rádi poradíme s tipy na ubytování v okolí.</span>
+            <span data-en>Guest house accommodation is at your own expense. We're happy to recommend places nearby.</span>
+            <span data-pl>Nocleg w pensjonacie każdy opłaca we własnym zakresie. Chętnie doradzimy sprawdzone miejsca w okolicy.</span>
+          </div>
+        </div>
+
+        <!-- SONG REQUEST -->
+        <div class="form-group">
+          <label>🎵 <span data-cs>Jedna skladba, kterou chcete na svatbě slyšet</span><span data-en>One song you'd love to hear at the wedding</span><span data-pl>Jeden utwór, który chcielibyście usłyszeć na weselu</span></label>
+          <input type="text" id="f-song" placeholder="Interpret – Název skladby">
+        </div>
       </div>
 
       <div class="form-group">
-        <label data-cs>Dietní omezení / alergie</label>
-        <label data-en>Dietary restrictions / allergies</label>
-        <input type="text" data-cs-placeholder="Vegetarián, bezlepkové, alergie na ořechy..." data-en-placeholder="Vegetarian, gluten-free, nut allergy...">
+        <label><span data-cs>Vzkaz novomanželům</span><span data-en>Message to the couple</span><span data-pl>Wiadomość dla nowożeńców</span></label>
+        <textarea id="f-message" placeholder="🌿"></textarea>
       </div>
 
-      <div class="form-group">
-        <label data-cs>Vzkaz novomanželům (nepovinné)</label>
-        <label data-en>Message to the couple (optional)</label>
-        <textarea data-cs-placeholder="Těšíme se na vás! 🌿" data-en-placeholder="Can't wait to celebrate with you! 🌿"></textarea>
-      </div>
-
-      <button type="submit" class="btn-submit">
-        <span data-cs>Potvrdit účast</span>
-        <span data-en>Confirm Attendance</span>
+      <button type="submit" class="btn-submit" id="submit-btn">
+        <span data-cs>Potvrdit účast</span><span data-en>Confirm Attendance</span><span data-pl>Potwierdź obecność</span>
       </button>
-      <p class="rsvp-note" data-cs>Vaše odpověď bude doručena Evě &amp; Josefovi.</p>
-      <p class="rsvp-note" data-en>Your reply will be delivered to Eva &amp; Josef.</p>
+      <p class="rsvp-note-small" data-cs>Vaše odpověď bude doručena Evě & Josefovi.</p>
+      <p class="rsvp-note-small" data-en>Your reply will be delivered to Eva & Josef.</p>
+      <p class="rsvp-note-small" data-pl>Wasza odpowiedź trafi do Evy i Josefa.</p>
     </form>
 
     <div class="rsvp-success" id="rsvp-success">
       <div class="icon">🌿</div>
-      <h3 data-cs>Díky, těšíme se na vás!</h3>
-      <h3 data-en>Thank you, we can't wait to see you!</h3>
-      <p data-cs>Vaše odpověď jsme přijali. Podrobnosti upřesníme closer to the date. Do té doby – nashledanou v Nových Hamrech! 💚</p>
-      <p data-en>We've received your reply. We'll confirm details closer to the date. Until then – see you in Nové Hamry! 💚</p>
+      <h3><span data-cs>Díky, těšíme se na vás!</span><span data-en>Thank you, we can't wait to see you!</span><span data-pl>Dziękujemy, czekamy na Was!</span></h3>
+      <p data-cs>Vaše odpověď jsme přijali. Do té doby – nashledanou v Nových Hamrech! 💚</p>
+      <p data-en>We've received your reply. Until then – see you in Nové Hamry! 💚</p>
+      <p data-pl>Otrzymaliśmy Waszą odpowiedź. Do zobaczenia w Nowych Hamrach! 💚</p>
     </div>
   </div>
 </section>
@@ -813,68 +821,153 @@ body.lang-en span[data-cs] { display: none; }
 <footer>
   <div class="footer-monogram">Eva &amp; Josef</div>
   <p>20. června 2026 · Nové Hamry u Karlových Varů</p>
-  <p style="margin-top:.5rem; font-size:.7rem;">Made with ♥</p>
+  <p style="margin-top:.5rem;font-size:.68rem;opacity:.4;">Made with ♥</p>
 </footer>
 
+</div><!-- end #main-content -->
+
 <script>
-// ── LANGUAGE ──
+// ══ PASSWORD ══
+const CORRECT_PW = 'EvaJosef26';
+function checkPassword() {
+  const val = document.getElementById('pw-input').value;
+  if (val === CORRECT_PW) {
+    document.getElementById('password-screen').style.display = 'none';
+    document.getElementById('main-content').style.display = 'block';
+    sessionStorage.setItem('weddingAuth', '1');
+    initQR(); startCountdown(); initReveal();
+  } else {
+    document.getElementById('pw-error').style.display = 'block';
+    document.getElementById('pw-input').value = '';
+    document.getElementById('pw-input').focus();
+  }
+}
+document.getElementById('pw-input').addEventListener('keydown', e => { if(e.key==='Enter') checkPassword(); });
+// Auto-unlock if already authenticated
+if (sessionStorage.getItem('weddingAuth') === '1') {
+  document.getElementById('password-screen').style.display = 'none';
+  document.getElementById('main-content').style.display = 'block';
+  setTimeout(() => { initQR(); startCountdown(); initReveal(); }, 10);
+}
+
+// ══ LANGUAGE ══
 function setLang(lang) {
   document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
-  document.querySelector(`.lang-btn[onclick="setLang('${lang}')"]`).classList.add('active');
-  document.body.classList.toggle('lang-en', lang === 'en');
-  // update placeholders
-  document.querySelectorAll('[data-cs-placeholder]').forEach(el => {
-    el.placeholder = lang === 'en' ? el.dataset.enPlaceholder : el.dataset.csPlaceholder;
+  document.querySelectorAll(`.lang-btn[onclick="setLang('${lang}')"]`).forEach(b => b.classList.add('active'));
+  document.body.className = lang === 'cs' ? '' : `lang-${lang}`;
+  localStorage.setItem('weddingLang', lang);
+}
+const savedLang = localStorage.getItem('weddingLang');
+if (savedLang && savedLang !== 'cs') setLang(savedLang);
+
+// ══ QR CODE ══
+function initQR() {
+  if (document.getElementById('qrcode').children.length > 0) return;
+  new QRCode(document.getElementById('qrcode'), {
+    text: 'https://drive.google.com/drive/folders/1oYuCCJWEo8TcM4ZbIyiQ322wXdu3AqhE',
+    width: 180, height: 180,
+    colorDark: '#3d2e1e', colorLight: '#ffffff',
+    correctLevel: QRCode.CorrectLevel.H
   });
 }
-// init placeholders
-document.querySelectorAll('[data-cs-placeholder]').forEach(el => {
-  el.placeholder = el.dataset.csPlaceholder;
-});
 
-// ── COUNTDOWN ──
-function updateCountdown() {
-  const wedding = new Date('2026-06-20T14:00:00');
-  const now = new Date();
-  const diff = wedding - now;
-  if (diff <= 0) {
-    document.getElementById('countdown').innerHTML = '<div style="font-family:Cormorant Garamond,serif;font-size:1.8rem;color:var(--bark);font-style:italic;">Dnes je ten den! 🌿</div>';
-    return;
+// ══ COUNTDOWN ══
+function startCountdown() {
+  function update() {
+    const wedding = new Date('2026-06-20T14:00:00');
+    const now = new Date();
+    const diff = wedding - now;
+    if (diff <= 0) {
+      document.getElementById('cd-days').textContent = '0';
+      document.getElementById('cd-hours').textContent = '00';
+      document.getElementById('cd-min').textContent = '00';
+      document.getElementById('cd-sec').textContent = '00';
+      return;
+    }
+    document.getElementById('cd-days').textContent  = String(Math.floor(diff/86400000)).padStart(2,'0');
+    document.getElementById('cd-hours').textContent = String(Math.floor((diff%86400000)/3600000)).padStart(2,'0');
+    document.getElementById('cd-min').textContent   = String(Math.floor((diff%3600000)/60000)).padStart(2,'0');
+    document.getElementById('cd-sec').textContent   = String(Math.floor((diff%60000)/1000)).padStart(2,'0');
   }
-  const d = Math.floor(diff / 86400000);
-  const h = Math.floor((diff % 86400000) / 3600000);
-  const m = Math.floor((diff % 3600000) / 60000);
-  const s = Math.floor((diff % 60000) / 1000);
-  document.getElementById('cd-days').textContent  = String(d).padStart(2,'0');
-  document.getElementById('cd-hours').textContent = String(h).padStart(2,'0');
-  document.getElementById('cd-min').textContent   = String(m).padStart(2,'0');
-  document.getElementById('cd-sec').textContent   = String(s).padStart(2,'0');
+  update(); setInterval(update, 1000);
 }
-updateCountdown();
-setInterval(updateCountdown, 1000);
 
-// ── REVEAL ON SCROLL ──
-const observer = new IntersectionObserver(entries => {
-  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-}, { threshold: .1 });
-document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+// ══ REVEAL ON SCROLL ══
+function initReveal() {
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: .08 });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+}
 
-// ── RSVP SELECT ──
-let rsvpChoice = null;
-function selectRsvp(choice) {
-  rsvpChoice = choice;
-  document.getElementById('yes-btn').className = 'rsvp-radio' + (choice === 'yes' ? ' selected' : '');
-  document.getElementById('no-btn').className  = 'rsvp-radio' + (choice === 'no' ? ' selected-no' : '');
-  document.getElementById('guests-group').style.display = choice === 'yes' ? '' : 'none';
+// ══ RSVP TOGGLE ══
+let rsvpChoice = 'yes';
+function selectRsvp(c) {
+  rsvpChoice = c;
+  document.getElementById('yes-btn').className = 'rsvp-radio' + (c==='yes' ? ' selected' : '');
+  document.getElementById('no-btn').className  = 'rsvp-radio' + (c==='no'  ? ' selected-no' : '');
+  document.getElementById('yes-fields').style.display = c==='yes' ? '' : 'none';
 }
 selectRsvp('yes');
 
-// ── RSVP SUBMIT ──
-document.getElementById('rsvp-form').addEventListener('submit', function(e) {
+// ══ ACCOMMODATION ══
+let accChoice = null;
+function selectAcc(el, val) {
+  document.querySelectorAll('.acc-option').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+  accChoice = val;
+}
+
+// ══ GOOGLE FORMS SUBMIT ══
+// TODO: Replace FORM_ACTION_URL with your Google Form action URL
+// Steps:
+//  1. Open your Google Form → ⋮ → "Get pre-filled link"
+//  2. Fill all fields → Get link → copy the URL
+//  3. Change "viewform" to "formResponse" in the URL
+//  4. Find each entry.XXXXXX parameter for each field
+//  5. Replace the entry IDs below
+
+const FORM_ACTION_URL = 'https://docs.google.com/forms/d/e/1FAIpQLScukZCMTbChu2_e1bd9zSlpDVLNNKZr2gxFjEVuubxqTmFVKg/formResponse';
+const ENTRY = {
+  name:    'entry.2032118738',  // Jméno a příjmení
+  email:   'entry.165207535',   // E-mail
+  attend:  'entry.1459792134',  // Přijdu? (Ano / Ne)
+  guests:  'entry.163736871',   // Počet osob
+  diet:    'entry.279628498',   // Dietní omezení
+  acc:     'entry.2133991618',  // Ubytování
+  song:    'entry.765656513',   // Skladba
+  message: 'entry.869716983',   // Vzkaz
+};
+
+document.getElementById('rsvp-form').addEventListener('submit', async function(e) {
   e.preventDefault();
-  this.style.display = 'none';
-  document.getElementById('rsvp-success').style.display = 'block';
+  const btn = document.getElementById('submit-btn');
+  btn.disabled = true;
+
+  const params = new URLSearchParams();
+  params.append(ENTRY.name,    document.getElementById('f-name').value);
+  params.append(ENTRY.email,   document.getElementById('f-email').value);
+  params.append(ENTRY.attend,  rsvpChoice === 'yes' ? 'Ano' : 'Ne');
+  params.append(ENTRY.guests,  document.getElementById('f-guests')?.value || '—');
+  params.append(ENTRY.diet,    document.getElementById('f-diet')?.value || '—');
+  params.append(ENTRY.acc,     accChoice || '—');
+  params.append(ENTRY.song,    document.getElementById('f-song')?.value || '—');
+  params.append(ENTRY.message, document.getElementById('f-message').value);
+
+  try {
+    await fetch(FORM_ACTION_URL, {
+      method: 'POST', mode: 'no-cors',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: params.toString()
+    });
+  } catch(_) {}
+  showSuccess();
 });
+
+function showSuccess() {
+  document.getElementById('rsvp-form').style.display = 'none';
+  document.getElementById('rsvp-success').style.display = 'block';
+}
 </script>
 </body>
 </html>
