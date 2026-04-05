@@ -226,7 +226,7 @@ h2 {
 .details h2 { color: var(--gold-lt); margin-bottom: 1rem; }
 .details .subtitle { color: rgba(255,255,255,.5); font-size: .82rem; letter-spacing: .12em; text-transform: uppercase; margin-bottom: 3.5rem; }
 .details-grid {
-  display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px;
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px;
   background: rgba(255,255,255,.1);
   border: 1px solid rgba(255,255,255,.1); border-radius: 16px; overflow: hidden;
 }
@@ -405,7 +405,7 @@ body.lang-pl span[data-cs] { display: none; }
   .nav-links { display: none; }
   .story-inner { grid-template-columns: 1fr; gap: 2.5rem; }
   .story-photos { height: 280px; grid-template-rows: 1fr; grid-template-columns: 1fr 1fr; }
-  .details-grid { grid-template-columns: 1fr; }
+  .details-grid { grid-template-columns: 1fr 1fr; }
   .maps-grid { grid-template-columns: 1fr; }
   .form-row { grid-template-columns: 1fr; }
   .countdown { gap: 1.5rem; }
@@ -538,15 +538,15 @@ body.lang-pl span[data-cs] { display: none; }
     <div class="story-text">
       <div class="section-label"><span data-cs>Náš příběh</span><span data-en>Our Story</span><span data-pl>Nasza historia</span></div>
       <h2><span data-cs>Jak to všechno začalo</span><span data-en>How It All Began</span><span data-pl>Jak to się zaczęło</span></h2>
-      <p data-cs>Potkali jsme se na jednom z těch nečekaných míst, kde vás život někdy překvapí. Od prvního okamžiku bylo jasné, že je v tom něco víc než jen náhoda.</p>
-      <p data-en>We met in one of those unexpected places where life sometimes surprises you. From the very first moment it was clear that there was something more than just coincidence.</p>
-      <p data-pl>Spotkaliśmy się w jednym z tych nieoczekiwanych miejsc, w których życie czasem nas zaskakuje. Od pierwszej chwili było jasne, że to coś więcej niż przypadek.</p>
-      <p data-cs>Sdílejeme lásku k přírodě, tichým lesním cestám a ranní kávě s výhledem na hory. A právě proto jsme si pro naši svatbu vybrali místo, které to vše ztělesňuje – krásné Krušnohoří.</p>
-      <p data-en>We share a love of nature, quiet forest paths and morning coffee with a mountain view. That's exactly why we chose a place that embodies all of this – the beautiful Ore Mountains.</p>
-      <p data-pl>Łączy nas miłość do natury, leśnych ścieżek i porannej kawy z widokiem na góry. Dlatego właśnie wybraliśmy to wyjątkowe miejsce – piękne Góry Rudawskie.</p>
-      <p data-cs>Jsme rádi, že tento výjimečný den prožijeme právě s vámi. 🌿</p>
-      <p data-en>We're so happy to share this special day with you. 🌿</p>
-      <p data-pl>Cieszymy się, że ten wyjątkowy dzień spędzimy właśnie z Wami. 🌿</p>
+      <p data-cs>Potkali jsme se na jednom z těch nenápadných míst, kde vás život dokáže překvapit, a to na vysokoškolských kolejích v Ústí nad Labem. Už od prvního okamžiku bylo cítit, že nejde jen o náhodné setkání a že se chceme opět vidět.</p>
+      <p data-en>We met in one of those unassuming places where life can surprise you – the student halls in Ústí nad Labem. From the very first moment it felt like more than just a chance encounter, and we knew we wanted to see each other again.</p>
+      <p data-pl>Poznaliśmy się w jednym z tych niepozornych miejsc, w których życie potrafi zaskoczyć – w akademiku w Ústí nad Labem. Od pierwszej chwili czuliśmy, że to nie było zwykłe spotkanie i że chcemy się znowu zobaczyć.</p>
+      <p data-cs>Postupně jsme zjistili, kolik toho máme společného: lásku k přírodě, cestování, objevování cizích kultur i obyčejné chvíle u ranní kávy s výhledem na hory. Právě tyhle momenty nás přirozeně dovedly k místu, které pro nás všechno tohle symbolizuje – ke krásnému Krušnohoří.</p>
+      <p data-en>Over time we discovered how much we have in common: a love of nature, travel, exploring new cultures, and simple moments over morning coffee with a mountain view. Those moments naturally led us to a place that symbolises all of this – the beautiful Ore Mountains.</p>
+      <p data-pl>Z czasem odkryliśmy, ile nas łączy: miłość do natury, podróży, odkrywania obcych kultur i zwykłych chwil przy porannej kawie z widokiem na góry. To właśnie te momenty przywiodły nas naturalnie do miejsca, które to wszystko symbolizuje – pięknych Gór Rudawskich.</p>
+      <p data-cs>Budeme moc rádi, když tento výjimečný den prožijete spolu s námi. Těšíme se na vás. 🌿</p>
+      <p data-en>We would be so happy to share this special day with you. We can't wait to see you. 🌿</p>
+      <p data-pl>Będzie nam bardzo miło, jeśli spędzicie z nami ten wyjątkowy dzień. Czekamy na Was. 🌿</p>
     </div>
     <div class="story-photos">
       <div class="photo-placeholder" id="photo1">
@@ -589,9 +589,16 @@ body.lang-pl span[data-cs] { display: none; }
       <div class="detail-item">
         <div class="detail-icon">🌲</div>
         <h3><span data-cs>Prostředí</span><span data-en>Setting</span><span data-pl>Otoczenie</span></h3>
-        <p data-cs>Příroda, Krušné hory<br>Vhodná obuv doporučena<br>Parkoviště u místa konání</p>
-        <p data-en>Nature, Ore Mountains<br>Sturdy footwear recommended<br>Parking available on site</p>
-        <p data-pl>Natura, Góry Rudawskie<br>Zalecamy wygodne obuwie<br>Parking na miejscu</p>
+        <p data-cs>Svatební zahradní párty, Krušné hory<br>Vhodná obuv doporučena<br>Parkoviště u místa konání či ubytování</p>
+        <p data-en>Wedding garden party, Ore Mountains<br>Sturdy footwear recommended<br>Parking at venue or accommodation</p>
+        <p data-pl>Weselne garden party, Góry Rudawskie<br>Zalecamy wygodne obuwie<br>Parking przy miejscu lub noclegiem</p>
+      </div>
+      <div class="detail-item">
+        <div class="detail-icon">🌤️</div>
+        <h3><span data-cs>Počasí</span><span data-en>Weather</span><span data-pl>Pogoda</span></h3>
+        <p data-cs>Objednali jsme slunečno. V případě chyby v objednávce doporučujeme přibalit pláštěnku nebo pončo a gumáky. Není špatného počasí, jen špatně oblečený svatebčan. 🙂</p>
+        <p data-en>We've ordered sunshine. In case of an ordering error, we recommend packing a raincoat or poncho and wellies. There's no such thing as bad weather, only badly dressed wedding guests. 🙂</p>
+        <p data-pl>Zamówiliśmy słońce. Na wypadek błędu w zamówieniu polecamy spakować płaszcz przeciwdeszczowy lub ponczo i kalosze. Nie ma złej pogody, są tylko źle ubrani goście weselni. 🙂</p>
       </div>
     </div>
 
@@ -828,7 +835,7 @@ body.lang-pl span[data-cs] { display: none; }
 
 <script>
 // ══ PASSWORD ══
-const CORRECT_PW = 'EvaJosef26';
+const CORRECT_PW = 'EJ26';
 function checkPassword() {
   const val = document.getElementById('pw-input').value;
   if (val === CORRECT_PW) {
