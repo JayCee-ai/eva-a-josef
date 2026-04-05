@@ -357,16 +357,17 @@ h2 {
   border-left: 2px solid var(--stone);
 }
 
-.btn-submit {
-  width: 100%; background: var(--bark); color: #fff; border: none;
-  padding: 1rem; border-radius: 10px;
-  font-family: 'Jost', sans-serif; font-size: .82rem; font-weight: 500;
-  letter-spacing: .1em; text-transform: uppercase; cursor: pointer; margin-top: .75rem;
+.btn-rsvp {
+  display: inline-block;
+  background: var(--bark); color: #fff;
+  padding: 1.1rem 2.8rem; border-radius: 10px;
+  font-family: 'Jost', sans-serif; font-size: 1rem; font-weight: 500;
+  letter-spacing: .06em; text-decoration: none;
+  margin: .5rem 0 1.5rem;
   transition: background .2s, transform .15s, box-shadow .2s;
   box-shadow: 0 4px 20px rgba(61,46,30,.2);
 }
-.btn-submit:hover { background: var(--moss); transform: translateY(-2px); box-shadow: 0 8px 28px rgba(61,46,30,.25); }
-.btn-submit:disabled { opacity: .6; cursor: not-allowed; transform: none; }
+.btn-rsvp:hover { background: var(--moss); transform: translateY(-2px); box-shadow: 0 8px 28px rgba(61,46,30,.25); }
 
 .rsvp-note-small { font-size: .75rem; color: var(--stone); margin-top: .75rem; }
 
@@ -734,93 +735,22 @@ body.lang-pl span[data-cs] { display: none; }
     </div>
     <h2><span data-cs>Přijdete?</span><span data-en>Will You Come?</span><span data-pl>Przyjdziecie?</span></h2>
     <p class="lead">
-      <span data-cs>Prosíme o odpověď do <strong>1. dubna 2026</strong>.</span>
-      <span data-en>Please respond by <strong>1 April 2026</strong>.</span>
-      <span data-pl>Prosimy o odpowiedź do <strong>1 kwietnia 2026</strong>.</span>
+      <span data-cs>Prosíme o odpověď do <strong>30. dubna 2026</strong>. Vyplnění zabere jen 3 minuty.</span>
+      <span data-en>Please respond by <strong>30 April 2026</strong>. It only takes 3 minutes to fill in.</span>
+      <span data-pl>Prosimy o odpowiedź do <strong>30 kwietnia 2026</strong>. Wypełnienie zajmie tylko 3 minuty.</span>
     </p>
 
-    <form id="rsvp-form">
-      <div class="form-row">
-        <div class="form-group">
-          <label><span data-cs>Jméno a příjmení</span><span data-en>Full Name</span><span data-pl>Imię i nazwisko</span></label>
-          <input type="text" id="f-name" required placeholder="Jana Nováková">
-        </div>
-        <div class="form-group">
-          <label><span data-cs>E-mail</span><span data-en>Email</span><span data-pl>E-mail</span></label>
-          <input type="email" id="f-email" required placeholder="vas@email.cz">
-        </div>
-      </div>
+    <a class="btn-rsvp"
+       href="https://docs.google.com/forms/d/e/1FAIpQLScukZCMTbChu2_e1bd9zSlpDVLNNKZr2gxFjEVuubxqTmFVKg/viewform"
+       target="_blank" rel="noopener">
+      📋 &nbsp;<span data-cs>Vyplnit svatební dotazník</span>
+      <span data-en>Fill in the wedding questionnaire</span>
+      <span data-pl>Wypełnij ankietę ślubną</span>
+    </a>
 
-      <div class="form-group">
-        <label><span data-cs>Přijdu na svatbu</span><span data-en>I will attend</span><span data-pl>Będę na weselu</span></label>
-        <div class="rsvp-radios">
-          <div class="rsvp-radio" id="yes-btn" onclick="selectRsvp('yes')">
-            ✓ &nbsp;<span data-cs>Ano, přijdu!</span><span data-en>Yes, I'll be there!</span><span data-pl>Tak, będę!</span>
-          </div>
-          <div class="rsvp-radio" id="no-btn" onclick="selectRsvp('no')">
-            ✕ &nbsp;<span data-cs>Bohužel nepřijdu</span><span data-en>Sorry, I can't make it</span><span data-pl>Niestety nie przyjdę</span>
-          </div>
-        </div>
-      </div>
-
-      <div id="yes-fields">
-        <div class="form-group">
-          <label><span data-cs>Počet osob (včetně vás)</span><span data-en>Number of guests (including you)</span><span data-pl>Liczba osób (łącznie z Wami)</span></label>
-          <select id="f-guests">
-            <option>1</option><option>2</option><option>3</option><option value="4+">4+</option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label><span data-cs>Dietní omezení / alergie</span><span data-en>Dietary restrictions / allergies</span><span data-pl>Ograniczenia dietetyczne / alergie</span></label>
-          <input type="text" id="f-diet" placeholder="Vegetarián, bezlepkové, alergie…">
-        </div>
-
-        <!-- ACCOMMODATION -->
-        <div class="form-group">
-          <label><span data-cs>Ubytování – jak spíte?</span><span data-en>Accommodation – where will you sleep?</span><span data-pl>Nocleg – jak śpicie?</span></label>
-          <div class="accommodation-options" id="acc-options">
-            <div class="acc-option" onclick="selectAcc(this, 'stan')">⛺ <span data-cs>Spím ve stanu</span><span data-en>Tent</span><span data-pl>Namiot</span></div>
-            <div class="acc-option" onclick="selectAcc(this, 'karavan')">🚐 <span data-cs>Spím v autě / karavanu</span><span data-en>Car / Caravan</span><span data-pl>Auto / Karawan</span></div>
-            <div class="acc-option" onclick="selectAcc(this, 'penzion')">🏡 <span data-cs>Spím v penzionu</span><span data-en>Guest house</span><span data-pl>Pensjonat</span></div>
-            <div class="acc-option" onclick="selectAcc(this, 'fara')">⛪ <span data-cs>Spím na Faře</span><span data-en>At the Rectory</span><span data-pl>Na plebanii</span></div>
-            <div class="acc-option" onclick="selectAcc(this, 'sirak')">🌙 <span data-cs>Spím pod širákem</span><span data-en>Under the stars</span><span data-pl>Pod gołym niebem</span></div>
-            <div class="acc-option" onclick="selectAcc(this, 'nespim')">🏠 <span data-cs>Nespím – jedu domů</span><span data-en>Not staying – heading home</span><span data-pl>Nie nocuję – jadę do domu</span></div>
-          </div>
-          <div class="acc-note">
-            ℹ️ <span data-cs>Ubytování v penzionu si každý hradí sám. Rádi poradíme s tipy na ubytování v okolí.</span>
-            <span data-en>Guest house accommodation is at your own expense. We're happy to recommend places nearby.</span>
-            <span data-pl>Nocleg w pensjonacie każdy opłaca we własnym zakresie. Chętnie doradzimy sprawdzone miejsca w okolicy.</span>
-          </div>
-        </div>
-
-        <!-- SONG REQUEST -->
-        <div class="form-group">
-          <label>🎵 <span data-cs>Jedna skladba, kterou chcete na svatbě slyšet</span><span data-en>One song you'd love to hear at the wedding</span><span data-pl>Jeden utwór, który chcielibyście usłyszeć na weselu</span></label>
-          <input type="text" id="f-song" placeholder="Interpret – Název skladby">
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label><span data-cs>Vzkaz novomanželům</span><span data-en>Message to the couple</span><span data-pl>Wiadomość dla nowożeńców</span></label>
-        <textarea id="f-message" placeholder="🌿"></textarea>
-      </div>
-
-      <button type="submit" class="btn-submit" id="submit-btn">
-        <span data-cs>Potvrdit účast</span><span data-en>Confirm Attendance</span><span data-pl>Potwierdź obecność</span>
-      </button>
-      <p class="rsvp-note-small" data-cs>Vaše odpověď bude doručena Evě & Josefovi.</p>
-      <p class="rsvp-note-small" data-en>Your reply will be delivered to Eva & Josef.</p>
-      <p class="rsvp-note-small" data-pl>Wasza odpowiedź trafi do Evy i Josefa.</p>
-    </form>
-
-    <div class="rsvp-success" id="rsvp-success">
-      <div class="icon">🌿</div>
-      <h3><span data-cs>Díky, těšíme se na vás!</span><span data-en>Thank you, we can't wait to see you!</span><span data-pl>Dziękujemy, czekamy na Was!</span></h3>
-      <p data-cs>Vaše odpověď jsme přijali. Do té doby – nashledanou v Nových Hamrech! 💚</p>
-      <p data-en>We've received your reply. Until then – see you in Nové Hamry! 💚</p>
-      <p data-pl>Otrzymaliśmy Waszą odpowiedź. Do zobaczenia w Nowych Hamrach! 💚</p>
-    </div>
+    <p class="rsvp-note-small" data-cs>Formulář se otevře v novém okně. Odpovědi jdou přímo k nám. 🌿</p>
+    <p class="rsvp-note-small" data-en>The form will open in a new tab. Replies go directly to us. 🌿</p>
+    <p class="rsvp-note-small" data-pl>Formularz otworzy się w nowej karcie. Odpowiedzi trafiają bezpośrednio do nas. 🌿</p>
   </div>
 </section>
 
@@ -907,95 +837,6 @@ function initReveal() {
   document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
 }
 
-// ══ RSVP TOGGLE ══
-let rsvpChoice = 'yes';
-function selectRsvp(c) {
-  rsvpChoice = c;
-  document.getElementById('yes-btn').className = 'rsvp-radio' + (c==='yes' ? ' selected' : '');
-  document.getElementById('no-btn').className  = 'rsvp-radio' + (c==='no'  ? ' selected-no' : '');
-  document.getElementById('yes-fields').style.display = c==='yes' ? '' : 'none';
-}
-selectRsvp('yes');
-
-// ══ ACCOMMODATION ══
-let accChoice = null;
-function selectAcc(el, val) {
-  document.querySelectorAll('.acc-option').forEach(o => o.classList.remove('selected'));
-  el.classList.add('selected');
-  accChoice = val;
-}
-
-// ══ GOOGLE FORMS SUBMIT ══
-// TODO: Replace FORM_ACTION_URL with your Google Form action URL
-// Steps:
-//  1. Open your Google Form → ⋮ → "Get pre-filled link"
-//  2. Fill all fields → Get link → copy the URL
-//  3. Change "viewform" to "formResponse" in the URL
-//  4. Find each entry.XXXXXX parameter for each field
-//  5. Replace the entry IDs below
-
-const FORM_ACTION_URL = 'https://docs.google.com/forms/d/e/1FAIpQLScukZCMTbChu2_e1bd9zSlpDVLNNKZr2gxFjEVuubxqTmFVKg/formResponse';
-const ENTRY = {
-  name:    'entry.2032118738',  // Jméno a příjmení
-  email:   'entry.165207535',   // E-mail
-  attend:  'entry.1459792134',  // Přijdu? (Ano / Ne)
-  guests:  'entry.163736871',   // Počet osob
-  diet:    'entry.279628498',   // Dietní omezení
-  acc:     'entry.2133991618',  // Ubytování
-  song:    'entry.765656513',   // Skladba
-  message: 'entry.869716983',   // Vzkaz
-};
-
-// Skrytý iframe – spolehlivé odeslání do Google Forms bez CORS problémů
-const iframe = document.createElement('iframe');
-iframe.name = 'hidden-form-target';
-iframe.style.cssText = 'display:none;width:0;height:0;border:0;position:absolute;';
-document.body.appendChild(iframe);
-
-document.getElementById('rsvp-form').addEventListener('submit', function(e) {
-  e.preventDefault();
-  const btn = document.getElementById('submit-btn');
-  btn.disabled = true;
-  btn.textContent = '⏳ Odesílám...';
-
-  // Sestavíme dočasný skrytý formulář a odešleme přes iframe
-  const tempForm = document.createElement('form');
-  tempForm.method  = 'POST';
-  tempForm.action  = FORM_ACTION_URL;
-  tempForm.target  = 'hidden-form-target';
-  tempForm.style.display = 'none';
-
-  const fields = {
-    [ENTRY.name]:    document.getElementById('f-name').value,
-    [ENTRY.email]:   document.getElementById('f-email').value,
-    [ENTRY.attend]:  rsvpChoice === 'yes' ? 'Ano' : 'Ne',
-    [ENTRY.guests]:  document.getElementById('f-guests')?.value || '—',
-    [ENTRY.diet]:    document.getElementById('f-diet')?.value  || '—',
-    [ENTRY.acc]:     accChoice || '—',
-    [ENTRY.song]:    document.getElementById('f-song')?.value  || '—',
-    [ENTRY.message]: document.getElementById('f-message').value,
-  };
-
-  Object.entries(fields).forEach(([name, value]) => {
-    const input = document.createElement('input');
-    input.type  = 'hidden';
-    input.name  = name;
-    input.value = value;
-    tempForm.appendChild(input);
-  });
-
-  document.body.appendChild(tempForm);
-  tempForm.submit();
-  document.body.removeChild(tempForm);
-
-  // Zobraz potvrzení po 800ms (Google Forms nepotřebuje potvrzení zpět)
-  setTimeout(showSuccess, 800);
-});
-
-function showSuccess() {
-  document.getElementById('rsvp-form').style.display = 'none';
-  document.getElementById('rsvp-success').style.display = 'block';
-}
 </script>
 </body>
 </html>
