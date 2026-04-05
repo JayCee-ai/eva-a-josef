@@ -319,6 +319,30 @@ h2 {
 }
 .pmap-nav-group .sat-btn:hover { color: var(--bark); border-color: var(--bark); }
 
+.pmaps-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 1.25rem; margin-top: 1.5rem;
+}
+.pmap-card {
+  background: var(--warm-white);
+  border: 1px solid var(--light-gray);
+  border-radius: 16px; padding: 1rem;
+}
+.pmap-card-badge {
+  display: inline-block; font-size: .68rem; font-weight: 600;
+  letter-spacing: .1em; text-transform: uppercase;
+  padding: .25rem .7rem; border-radius: 99px; margin-bottom: .5rem;
+}
+.pmap-badge-red    { background: rgba(224,80,80,.12); color: #c0392b; }
+.pmap-badge-blue   { background: rgba(41,128,185,.12); color: #1a56db; }
+.pmap-badge-green  { background: rgba(39,174,96,.12); color: #1a7a3c; }
+.pmap-badge-purple { background: rgba(142,68,173,.12); color: #6b21a8; }
+.pmap-card-title {
+  font-size: .88rem; font-weight: 500; color: var(--bark); line-height: 1.4;
+}
+.pmap-card .pmap-wrap iframe { height: 220px; }
+@media (max-width: 650px) { .pmaps-grid { grid-template-columns: 1fr; } }
+
 /* ── PARKING TABS ── */
 .parking-section { background: var(--linen); }
 .parking-inner { max-width: 860px; margin: 0 auto; }
@@ -948,123 +972,117 @@ body.lang-pl [data-en] { display: none; }
       <span data-pl>Kliknij zakładkę, aby zobaczyć mapę z zaznaczonymi miejscami parkingowymi.</span>
     </p>
 
-    <!-- TAB BUTTONS -->
-    <div class="ptabs">
-      <button class="ptab active" onclick="showPark('obrad')">
-        💍 <span data-cs>Obřad</span></span><span data-en>Ceremony</span><span data-pl>Ceremonia</span>
-      </button>
-      <button class="ptab" onclick="showPark('oslava')">
-        🎉 <span data-cs>Oslava</span></span><span data-en>Party</span><span data-pl>Zabawa</span>
-      </button>
-      <button class="ptab" onclick="showPark('fara')">
-        ⛪ <span data-cs>Fara</span></span><span data-en>Rectory</span><span data-pl>Plebania</span>
-      </button>
-      <button class="ptab" onclick="showPark('prehled')">
-        🗺️ <span data-cs>Přehled</span></span><span data-en>Overview</span><span data-pl>Przegląd</span>
-      </button>
-      <button class="ptab" onclick="showPark('ubytovani')">
-        🏡 <span data-cs>Ubytování</span></span><span data-en>Accommodation</span><span data-pl>Noclegi</span>
-      </button>
-    </div>
+    <!-- MAPY GRID -->
+    <div class="pmaps-grid">
 
-    <!-- MAP PANELS -->
-    <!-- OBŘAD -->
-    <div class="pmap-panel active" id="park-obrad">
-      <div class="pmap-wrap">
-        <iframe
-          src="https://www.google.com/maps?q=50.39612459727282,12.669266683457916&z=17&output=embed"
-          allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade">
-        </iframe>
-        <div class="pmap-overlay">
-          <div class="pmap-pin pin-red">🅿️ <span data-cs>Parkování podél silnice 2194</span></span><span data-en>Parking along road 2194</span><span data-pl>Parking wzdłuż drogi 2194</span></div>
-          <div class="pmap-pin pin-heart">💍 <span data-cs>Obřad – Kaplička Jelení</span></span><span data-en>Ceremony – Jelení Chapel</span><span data-pl>Ceremonia – kapliczka Jelení</span></div>
+      <div class="pmap-card">
+        <div class="pmap-card-badge pmap-badge-red">1 · OBŘAD</div>
+        <div class="pmap-card-title">
+          <span data-cs>Místo obřadu – kaplička Jelení</span>
+          <span data-en>Ceremony – Jelení Chapel</span>
+          <span data-pl>Miejsce ceremonii – kapliczka Jelení</span>
+        </div>
+        <div class="pmap-wrap" style="margin-top:.6rem">
+          <iframe src="https://www.google.com/maps?q=50.39608754710506,12.671114901473949&z=17&output=embed" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+        <div class="pmap-nav-group" style="margin-top:.6rem">
+          <a class="pmap-nav" href="https://maps.google.com/?q=50.39608754710506,12.671114901473949" target="_blank">
+            <span data-cs>Navigovat →</span><span data-en>Navigate →</span><span data-pl>Nawiguj →</span>
+          </a>
+          <a class="sat-btn" href="https://www.google.com/maps/@50.39608754710506,12.671114901473949,200m/data=!3m1!1e3" target="_blank" rel="noopener"><span data-cs>🛰️ Satelit →</span><span data-en>🛰️ Satellite →</span><span data-pl>🛰️ Satelita →</span></a>
         </div>
       </div>
-      <div class="pmap-info">
-        <span class="pmap-dot" style="background:#e05050"></span>
-        <span data-cs>3 parkoviště podél silnice č. 2194 – vyznačena červeně na vaší mapce</span>
-        <span data-en>3 parking areas along road no. 2194 – marked red on your map</span>
-        <span data-pl>3 miejsca parkingowe wzdłuż drogi nr 2194 – zaznaczone na czerwono na Waszej mapce</span>
-      </div>
-      <div class="pmap-nav-group">
-        <a class="pmap-nav" href="https://maps.google.com/?q=50.39612459727282,12.669266683457916" target="_blank">
-          <span data-cs>Navigovat na místo obřadu →</span><span data-en>Navigate to ceremony →</span><span data-pl>Nawiguj do miejsca ceremonii →</span>
-        </a>
-        <a class="sat-btn" href="https://www.google.com/maps/@50.39612459727282,12.669266683457916,200m/data=!3m1!1e3" target="_blank" rel="noopener"><span data-cs>🛰️ Satelitní pohled →</span><span data-en>🛰️ Satellite view →</span><span data-pl>🛰️ Widok satelitarny →</span></a>
-      </div>
-    </div>
 
-    <!-- OSLAVA -->
-    <div class="pmap-panel" id="park-oslava">
-      <div class="pmap-wrap">
-        <iframe
-          src="https://www.google.com/maps?q=50.362404097081885,12.714297810469532&z=17&output=embed"
-          allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade">
-        </iframe>
-        <div class="pmap-overlay">
-          <div class="pmap-pin pin-red">🅿️ <span data-cs>Parking u fotbalového hřiště</span><span data-en>Parking at football pitch</span><span data-pl>Parking przy boisku</span></div>
-          <div class="pmap-pin pin-heart">🎉 <span data-cs>Místo oslavy – Rolava</span></span><span data-en>Party venue – Rolava</span><span data-pl>Miejsce zabawy – Rolava</span></div>
+      <div class="pmap-card">
+        <div class="pmap-card-badge pmap-badge-blue">2 · PARKING OBŘAD</div>
+        <div class="pmap-card-title">
+          <span data-cs>Parkoviště u obřadu</span>
+          <span data-en>Parking – ceremony</span>
+          <span data-pl>Parking przy ceremonii</span>
+        </div>
+        <div class="pmap-wrap" style="margin-top:.6rem">
+          <iframe src="https://www.google.com/maps?q=50.39612459727282,12.669266683457916&z=17&output=embed" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+        <div class="pmap-nav-group" style="margin-top:.6rem">
+          <a class="pmap-nav" href="https://maps.google.com/?q=50.39612459727282,12.669266683457916" target="_blank">
+            <span data-cs>Navigovat →</span><span data-en>Navigate →</span><span data-pl>Nawiguj →</span>
+          </a>
+          <a class="sat-btn" href="https://www.google.com/maps/@50.39612459727282,12.669266683457916,200m/data=!3m1!1e3" target="_blank" rel="noopener"><span data-cs>🛰️ Satelit →</span><span data-en>🛰️ Satellite →</span><span data-pl>🛰️ Satelita →</span></a>
         </div>
       </div>
-      <div class="pmap-info">
-        <span class="pmap-dot" style="background:#e05050"></span>
-        <span data-cs>Parkování u fotbalového hřiště, cca 500 m od místa oslavy – pak pěšky. Druhé parkoviště přímo u sjezdovky Nové Hamry.</span>
-        <span data-en>Parking at the football pitch, approx. 500 m from the venue – then on foot. Second parking spot directly at the Nové Hamry ski slope.</span>
-        <span data-pl>Parking przy boisku piłkarskim, ok. 500 m od miejsca zabawy – potem pieszo. Drugi parking bezpośrednio przy stoku narciarskim Nové Hamry.</span>
-      </div>
-      <div class="pmap-nav-group">
-        <a class="pmap-nav" href="https://maps.google.com/?q=50.362404097081885,12.714297810469532" target="_blank">
-          <span data-cs>Navigovat na místo oslavy →</span><span data-en>Navigate to party venue →</span><span data-pl>Nawiguj do miejsca zabawy →</span>
-        </a>
-        <a class="sat-btn" href="https://www.google.com/maps/@50.362404097081885,12.714297810469532,250m/data=!3m1!1e3" target="_blank" rel="noopener"><span data-cs>🛰️ Satelitní pohled →</span><span data-en>🛰️ Satellite view →</span><span data-pl>🛰️ Widok satelitarny →</span></a>
-      </div>
-    </div>
 
-    <!-- FARA -->
-    <div class="pmap-panel" id="park-fara">
-      <div class="pmap-wrap">
-        <iframe
-          src="https://www.google.com/maps?q=50.363964787349644,12.724839781058087&z=17&output=embed"
-          allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade">
-        </iframe>
-        <div class="pmap-overlay">
-          <div class="pmap-pin pin-red">🅿️ <span data-cs>Parkoviště u Fary</span><span data-en>Rectory parking</span><span data-pl>Parking przy Plebanii</span></div>
-          <div class="pmap-pin pin-heart">⛪ <span data-cs>Penzion Na faře – Nové Hamry</span></span><span data-en>Guesthouse Na faře</span><span data-pl>Pensjonat Na faře – Nové Hamry</span></div>
+      <div class="pmap-card">
+        <div class="pmap-card-badge pmap-badge-green">3 · OSLAVA</div>
+        <div class="pmap-card-title">
+          <span data-cs>Místo oslavy – Rolava</span>
+          <span data-en>Party venue – Rolava</span>
+          <span data-pl>Miejsce zabawy – Rolava</span>
+        </div>
+        <div class="pmap-wrap" style="margin-top:.6rem">
+          <iframe src="https://www.google.com/maps?q=50.36509901640617,12.71030469668745&z=16&output=embed" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+        <div class="pmap-nav-group" style="margin-top:.6rem">
+          <a class="pmap-nav" href="https://maps.google.com/?q=50.36509901640617,12.71030469668745" target="_blank">
+            <span data-cs>Navigovat →</span><span data-en>Navigate →</span><span data-pl>Nawiguj →</span>
+          </a>
+          <a class="sat-btn" href="https://www.google.com/maps/@50.36509901640617,12.71030469668745,250m/data=!3m1!1e3" target="_blank" rel="noopener"><span data-cs>🛰️ Satelit →</span><span data-en>🛰️ Satellite →</span><span data-pl>🛰️ Satelita →</span></a>
         </div>
       </div>
-      <div class="pmap-info">
-        <span class="pmap-dot" style="background:#5a6b4a"></span>
-        <span data-cs>Parkoviště přímo u penzionu – velká červená plocha podél silnice 2209</span>
-        <span data-en>Parking directly at the guesthouse – large area along road 2209</span>
-        <span data-pl>Parking bezpośrednio przy pensjonacie – duży plac przy drodze 2209</span>
-      </div>
-      <div class="pmap-nav-group">
-        <a class="pmap-nav" href="https://maps.google.com/?q=50.363964787349644,12.724839781058087" target="_blank">
-          <span data-cs>Navigovat na Faru →</span><span data-en>Navigate to Rectory →</span><span data-pl>Nawiguj do Plebanii →</span>
-        </a>
-        <a class="sat-btn" href="https://www.google.com/maps/@50.363964787349644,12.724839781058087,200m/data=!3m1!1e3" target="_blank" rel="noopener"><span data-cs>🛰️ Satelitní pohled →</span><span data-en>🛰️ Satellite view →</span><span data-pl>🛰️ Widok satelitarny →</span></a>
-      </div>
-    </div>
 
-    <!-- PŘEHLED -->
-    <div class="pmap-panel" id="park-prehled">
-      <div class="pmap-wrap">
-        <iframe
-          src="https://www.google.com/maps?q=50.3800,12.6900&z=13&output=embed"
-          allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade">
-        </iframe>
-        <div class="pmap-overlay">
-          <div class="pmap-pin pin-heart">💍 <span data-cs>Obřad – Jelení</span><span data-en>Ceremony – Jelení</span><span data-pl>Ceremonia – Jelení</span></div>
-          <div class="pmap-pin pin-heart">🎉 <span data-cs>Oslava – Rolava</span></span><span data-en>Party – Rolava</span><span data-pl>Zabawa – Rolava</span></div>
-          <div class="pmap-pin pin-heart">⛪ <span data-cs>Fara – Nové Hamry</span></span><span data-en>Rectory – Nové Hamry</span><span data-pl>Plebania – Nové Hamry</span></div>
+      <div class="pmap-card">
+        <div class="pmap-card-badge pmap-badge-blue">4 · PARKING OSLAVA</div>
+        <div class="pmap-card-title">
+          <span data-cs>Parkoviště u oslavy</span>
+          <span data-en>Parking – party</span>
+          <span data-pl>Parking przy miejscu zabawy</span>
+        </div>
+        <div class="pmap-wrap" style="margin-top:.6rem">
+          <iframe src="https://www.google.com/maps?q=50.362404097081885,12.714297810469532&z=17&output=embed" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+        <div class="pmap-nav-group" style="margin-top:.6rem">
+          <a class="pmap-nav" href="https://maps.google.com/?q=50.362404097081885,12.714297810469532" target="_blank">
+            <span data-cs>Navigovat →</span><span data-en>Navigate →</span><span data-pl>Nawiguj →</span>
+          </a>
+          <a class="sat-btn" href="https://www.google.com/maps/@50.362404097081885,12.714297810469532,250m/data=!3m1!1e3" target="_blank" rel="noopener"><span data-cs>🛰️ Satelit →</span><span data-en>🛰️ Satellite →</span><span data-pl>🛰️ Satelita →</span></a>
         </div>
       </div>
-      <div class="pmap-info">
-        <span class="pmap-dot" style="background:#b8945a"></span>
-        <span data-cs>Oslava → Fara pěšky cca 22 min / 1,7 km · Obřad → Oslava autem cca 8 min</span>
-        <span data-en>Party → Rectory on foot approx. 22 min / 1.7 km · Ceremony → Party by car approx. 8 min</span>
-        <span data-pl>Zabawa → Plebania pieszo ok. 22 min / 1,7 km · Ceremonia → Zabawa autem ok. 8 min</span>
+
+      <div class="pmap-card">
+        <div class="pmap-card-badge pmap-badge-purple">5 · FARA</div>
+        <div class="pmap-card-title">
+          <span data-cs>Penzion Na faře – Nové Hamry</span>
+          <span data-en>Guesthouse Na faře</span>
+          <span data-pl>Pensjonat Na faře – Nové Hamry</span>
+        </div>
+        <div class="pmap-wrap" style="margin-top:.6rem">
+          <iframe src="https://www.google.com/maps?q=50.363964787349644,12.724839781058087&z=17&output=embed" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+        <div class="pmap-nav-group" style="margin-top:.6rem">
+          <a class="pmap-nav" href="https://maps.google.com/?q=50.363964787349644,12.724839781058087" target="_blank">
+            <span data-cs>Navigovat →</span><span data-en>Navigate →</span><span data-pl>Nawiguj →</span>
+          </a>
+          <a class="sat-btn" href="https://www.google.com/maps/@50.363964787349644,12.724839781058087,200m/data=!3m1!1e3" target="_blank" rel="noopener"><span data-cs>🛰️ Satelit →</span><span data-en>🛰️ Satellite →</span><span data-pl>🛰️ Satelita →</span></a>
+        </div>
       </div>
+
+      <div class="pmap-card">
+        <div class="pmap-card-badge pmap-badge-blue">6 · PARKING FARA</div>
+        <div class="pmap-card-title">
+          <span data-cs>Parkoviště u Fary</span>
+          <span data-en>Parking – Rectory</span>
+          <span data-pl>Parking przy Plebanii</span>
+        </div>
+        <div class="pmap-wrap" style="margin-top:.6rem">
+          <iframe src="https://www.google.com/maps?q=50.36409746674896,12.725280233791366&z=17&output=embed" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+        <div class="pmap-nav-group" style="margin-top:.6rem">
+          <a class="pmap-nav" href="https://maps.google.com/?q=50.36409746674896,12.725280233791366" target="_blank">
+            <span data-cs>Navigovat →</span><span data-en>Navigate →</span><span data-pl>Nawiguj →</span>
+          </a>
+          <a class="sat-btn" href="https://www.google.com/maps/@50.36409746674896,12.725280233791366,200m/data=!3m1!1e3" target="_blank" rel="noopener"><span data-cs>🛰️ Satelit →</span><span data-en>🛰️ Satellite →</span><span data-pl>🛰️ Satelita →</span></a>
+        </div>
+      </div>
+
     </div>
 
     <!-- UBYTOVÁNÍ -->
