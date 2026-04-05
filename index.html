@@ -304,6 +304,20 @@ h2 {
 }
 .qr-link:hover { color: var(--bark); }
 
+.map-label-links { display: flex; gap: .75rem; align-items: center; flex-wrap: wrap; margin-top: .25rem; }
+.sat-btn {
+  font-size: .72rem; color: var(--gold-lt); text-decoration: none;
+  letter-spacing: .06em; transition: color .2s; white-space: nowrap;
+  border-bottom: 1px solid rgba(232,213,176,.3); padding-bottom: 1px;
+}
+.sat-btn:hover { color: #fff; border-color: #fff; }
+.pmap-nav-group { display: flex; gap: 1.25rem; align-items: center; flex-wrap: wrap; }
+.pmap-nav-group .sat-btn {
+  color: var(--moss); border-bottom: 1px solid var(--moss-lt);
+  font-size: .78rem;
+}
+.pmap-nav-group .sat-btn:hover { color: var(--bark); border-color: var(--bark); }
+
 /* ── PARKING TABS ── */
 .parking-section { background: var(--linen); }
 .parking-inner { max-width: 860px; margin: 0 auto; }
@@ -715,26 +729,32 @@ body.lang-pl [data-en] { display: none; }
     <div class="maps-grid">
       <div class="map-card">
         <iframe
-          src="https://www.google.com/maps?q=50.36528651091963,12.709279748444677&z=15&output=embed"
+          src="https://www.google.com/maps?q=50.365109746950765,12.710617216064756&z=16&output=embed"
           allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade">
         </iframe>
         <div class="map-label">
-          <span>🎉 <span data-cs>Místo zábavy – Nové Hamry</span></span><span data-en>Celebration Venue</span></span>
-          <a href="https://maps.google.com/?q=50.36528651091963,12.709279748444677" target="_blank">
-            <span data-cs>Navigovat →</span><span data-en>Navigate →</span><span data-pl>Miejsce zabawy – Nové Hamry</span>
-          </a>
+          <span>🎉 <span data-cs>Místo zábavy – Nové Hamry</span><span data-en>Celebration Venue</span><span data-pl>Miejsce zabawy – Nové Hamry</span></span>
+          <div class="map-label-links">
+            <a href="https://maps.google.com/?q=50.36233859910003,12.714309965546995" target="_blank">
+              <span data-cs>Navigovat →</span><span data-en>Navigate →</span><span data-pl>Nawiguj →</span>
+            </a>
+            <a class="sat-btn" href="https://www.google.com/maps/@50.36362,12.71195,500m/data=!3m1!1e3" target="_blank" rel="noopener"><span data-cs>🛰️ Satelitní pohled →</span><span data-en>🛰️ Satellite view →</span><span data-pl>🛰️ Widok satelitarny →</span></a>
+          </div>
         </div>
       </div>
       <div class="map-card">
         <iframe
-          src="https://www.google.com/maps?q=50.395918472738984,12.670416394149264&z=15&output=embed"
+          src="https://www.google.com/maps?q=50.396039041097254,12.670779073373078&z=16&output=embed"
           allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade">
         </iframe>
         <div class="map-label">
-          <span>💍 <span data-cs>Místo obřadu</span></span><span data-en>Ceremony Venue</span></span>
-          <a href="https://maps.google.com/?q=50.395918472738984,12.670416394149264" target="_blank">
-            <span data-cs>Navigovat →</span><span data-en>Navigate →</span><span data-pl>Miejsce ceremonii</span>
-          </a>
+          <span>💍 <span data-cs>Místo obřadu</span><span data-en>Ceremony Venue</span><span data-pl>Miejsce ceremonii</span></span>
+          <div class="map-label-links">
+            <a href="https://maps.google.com/?q=50.39607591561716,12.669376769512063" target="_blank">
+              <span data-cs>Navigovat →</span><span data-en>Navigate →</span><span data-pl>Nawiguj →</span>
+            </a>
+            <a class="sat-btn" href="https://www.google.com/maps/@50.39607591561716,12.669376769512063,500m/data=!3m1!1e3" target="_blank" rel="noopener"><span data-cs>🛰️ Satelitní pohled →</span><span data-en>🛰️ Satellite view →</span><span data-pl>🛰️ Widok satelitarny →</span></a>
+          </div>
         </div>
       </div>
     </div>
@@ -951,7 +971,7 @@ body.lang-pl [data-en] { display: none; }
     <div class="pmap-panel active" id="park-obrad">
       <div class="pmap-wrap">
         <iframe
-          src="https://www.google.com/maps?q=50.395918472738984,12.670416394149264&z=16&output=embed"
+          src="https://www.google.com/maps?q=50.39607591561716,12.669376769512063&z=17&output=embed"
           allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade">
         </iframe>
         <div class="pmap-overlay">
@@ -965,16 +985,19 @@ body.lang-pl [data-en] { display: none; }
         <span data-en>3 parking areas along road no. 2194 – marked red on your map</span>
         <span data-pl>3 miejsca parkingowe wzdłuż drogi nr 2194 – zaznaczone na czerwono na Waszej mapce</span>
       </div>
-      <a class="pmap-nav" href="https://maps.google.com/?q=50.395918472738984,12.670416394149264" target="_blank">
-        <span data-cs>Navigovat na místo obřadu →</span><span data-en>Navigate to ceremony →</span><span data-pl>Nawiguj do miejsca ceremonii →</span>
-      </a>
+      <div class="pmap-nav-group">
+        <a class="pmap-nav" href="https://maps.google.com/?q=50.39607591561716,12.669376769512063" target="_blank">
+          <span data-cs>Navigovat na místo obřadu →</span><span data-en>Navigate to ceremony →</span><span data-pl>Nawiguj do miejsca ceremonii →</span>
+        </a>
+        <a class="sat-btn" href="https://www.google.com/maps/@50.39607591561716,12.669376769512063,500m/data=!3m1!1e3" target="_blank" rel="noopener"><span data-cs>🛰️ Satelitní pohled →</span><span data-en>🛰️ Satellite view →</span><span data-pl>🛰️ Widok satelitarny →</span></a>
+      </div>
     </div>
 
     <!-- OSLAVA -->
     <div class="pmap-panel" id="park-oslava">
       <div class="pmap-wrap">
         <iframe
-          src="https://www.google.com/maps?q=50.36528651091963,12.709279748444677&z=16&output=embed"
+          src="https://www.google.com/maps?q=50.36362,12.71195&z=16&output=embed"
           allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade">
         </iframe>
         <div class="pmap-overlay">
@@ -984,20 +1007,23 @@ body.lang-pl [data-en] { display: none; }
       </div>
       <div class="pmap-info">
         <span class="pmap-dot" style="background:#e05050"></span>
-        <span data-cs>Parkování u fotbalového hřiště, cca 500 m od místa oslavy – pak pěšky</span>
-        <span data-en>Parking at the football pitch, approx. 500 m from the venue – then on foot</span>
-        <span data-pl>Parking przy boisku piłkarskim, ok. 500 m od miejsca zabawy – potem pieszo</span>
+        <span data-cs>Parkování u fotbalového hřiště, cca 500 m od místa oslavy – pak pěšky. Druhé parkoviště přímo u sjezdovky Nové Hamry.</span>
+        <span data-en>Parking at the football pitch, approx. 500 m from the venue – then on foot. Second parking spot directly at the Nové Hamry ski slope.</span>
+        <span data-pl>Parking przy boisku piłkarskim, ok. 500 m od miejsca zabawy – potem pieszo. Drugi parking bezpośrednio przy stoku narciarskim Nové Hamry.</span>
       </div>
-      <a class="pmap-nav" href="https://maps.google.com/?q=50.36528651091963,12.709279748444677" target="_blank">
-        <span data-cs>Navigovat na místo oslavy →</span><span data-en>Navigate to party venue →</span><span data-pl>Nawiguj do miejsca zabawy →</span>
-      </a>
+      <div class="pmap-nav-group">
+        <a class="pmap-nav" href="https://maps.google.com/?q=50.36233859910003,12.714309965546995" target="_blank">
+          <span data-cs>Navigovat na místo oslavy →</span><span data-en>Navigate to party venue →</span><span data-pl>Nawiguj do miejsca zabawy →</span>
+        </a>
+        <a class="sat-btn" href="https://www.google.com/maps/@50.36362,12.71195,500m/data=!3m1!1e3" target="_blank" rel="noopener"><span data-cs>🛰️ Satelitní pohled →</span><span data-en>🛰️ Satellite view →</span><span data-pl>🛰️ Widok satelitarny →</span></a>
+      </div>
     </div>
 
     <!-- FARA -->
     <div class="pmap-panel" id="park-fara">
       <div class="pmap-wrap">
         <iframe
-          src="https://www.google.com/maps?q=50.3627,12.7178&z=17&output=embed"
+          src="https://www.google.com/maps?q=50.36400639985489,12.725426390838747&z=17&output=embed"
           allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade">
         </iframe>
         <div class="pmap-overlay">
@@ -1011,16 +1037,19 @@ body.lang-pl [data-en] { display: none; }
         <span data-en>Parking directly at the guesthouse – large area along road 2209</span>
         <span data-pl>Parking bezpośrednio przy pensjonacie – duży plac przy drodze 2209</span>
       </div>
-      <a class="pmap-nav" href="https://maps.google.com/?q=Penzion+Na+faře+Nové+Hamry" target="_blank">
-        <span data-cs>Navigovat na Faru →</span><span data-en>Navigate to Rectory →</span><span data-pl>Nawiguj do Plebanii →</span>
-      </a>
+      <div class="pmap-nav-group">
+        <a class="pmap-nav" href="https://maps.google.com/?q=50.36400639985489,12.725426390838747" target="_blank">
+          <span data-cs>Navigovat na Faru →</span><span data-en>Navigate to Rectory →</span><span data-pl>Nawiguj do Plebanii →</span>
+        </a>
+        <a class="sat-btn" href="https://www.google.com/maps/@50.36400639985489,12.725426390838747,500m/data=!3m1!1e3" target="_blank" rel="noopener"><span data-cs>🛰️ Satelitní pohled →</span><span data-en>🛰️ Satellite view →</span><span data-pl>🛰️ Widok satelitarny →</span></a>
+      </div>
     </div>
 
     <!-- PŘEHLED -->
     <div class="pmap-panel" id="park-prehled">
       <div class="pmap-wrap">
         <iframe
-          src="https://www.google.com/maps?q=50.3640,12.6900&z=14&output=embed"
+          src="https://www.google.com/maps?q=50.3800,12.6900&z=13&output=embed"
           allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade">
         </iframe>
         <div class="pmap-overlay">
