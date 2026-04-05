@@ -96,10 +96,10 @@ nav {
   font-family: 'Cormorant Garamond', serif;
   font-size: 1.3rem; font-weight: 600; color: var(--bark); letter-spacing: .06em;
 }
-.nav-links { display: flex; gap: 1.6rem; list-style: none; }
+.nav-links { display: flex; gap: 1.1rem; list-style: none; }
 .nav-links a {
-  text-decoration: none; font-size: .75rem; font-weight: 500;
-  letter-spacing: .1em; text-transform: uppercase; color: var(--muted);
+  text-decoration: none; font-size: .72rem; font-weight: 500;
+  letter-spacing: .08em; text-transform: uppercase; color: var(--muted);
   transition: color .2s;
 }
 .nav-links a:hover { color: var(--bark); }
@@ -574,11 +574,13 @@ body.lang-pl [data-en] { display: none; }
 <nav>
   <div class="nav-monogram">E &amp; J</div>
   <ul class="nav-links">
-    <li><a href="#story"><span data-cs>Náš příběh</span></span><span data-en>Our Story</span><span data-pl>Nasza historia</span></a></li>
-    <li><a href="#details"><span data-cs>Místo</span></span><span data-en>Venue</span><span data-pl>Miejsce</span></a></li>
-    <li><a href="#program"><span data-cs>Program</span></span><span data-en>Schedule</span><span data-pl>Program</span></a></li>
-    <li><a href="#gallery"><span data-cs>Fotky</span></span><span data-en>Photos</span><span data-pl>Zdjęcia</span></a></li>
-    <li><a href="#rsvp"><span data-cs>Dotazník</span></span><span data-en>Questionnaire</span><span data-pl>Ankieta</span></a></li>
+    <li><a href="#story"><span data-cs>Náš příběh</span><span data-en>Our Story</span><span data-pl>Nasza historia</span></a></li>
+    <li><a href="#details"><span data-cs>Místo</span><span data-en>Venue</span><span data-pl>Miejsce</span></a></li>
+    <li><a href="#program"><span data-cs>Program</span><span data-en>Schedule</span><span data-pl>Program</span></a></li>
+    <li><a href="#gallery"><span data-cs>Fotky</span><span data-en>Photos</span><span data-pl>Zdjęcia</span></a></li>
+    <li><a href="#rsvp"><span data-cs>Dotazník</span><span data-en>Questionnaire</span><span data-pl>Ankieta</span></a></li>
+    <li><a href="#gift"><span data-cs>Dary</span><span data-en>Gifts</span><span data-pl>Prezenty</span></a></li>
+    <li><a href="#parking"><span data-cs>Mapy</span><span data-en>Maps</span><span data-pl>Mapy</span></a></li>
   </ul>
   <div class="lang-toggle">
     <button class="lang-btn active" onclick="setLang('cs')">CS</button>
@@ -906,7 +908,7 @@ body.lang-pl [data-en] { display: none; }
 </section>
 
 <!-- GIFT -->
-<section class="gift-section reveal">
+<section class="gift-section reveal" id="gift">
   <div class="gift-inner">
     <div class="section-label">
       <span data-cs>Dary</span></span><span data-en>Gifts</span><span data-pl>Prezenty</span>
@@ -929,7 +931,7 @@ body.lang-pl [data-en] { display: none; }
 </section>
 
 <!-- PARKING & ACCOMMODATION MAPS -->
-<section class="parking-section reveal">
+<section class="parking-section reveal" id="parking">
   <div class="parking-inner">
     <div class="section-label">
       <span data-cs>Parkování & Ubytování</span>
