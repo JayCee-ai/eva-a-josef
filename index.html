@@ -304,6 +304,87 @@ h2 {
 }
 .qr-link:hover { color: var(--bark); }
 
+/* ── PARKING TABS ── */
+.parking-section { background: var(--linen); }
+.parking-inner { max-width: 860px; margin: 0 auto; }
+.parking-inner h2 { text-align: center; margin-bottom: .5rem; }
+.parking-inner .lead { text-align: center; color: var(--muted); font-size: .9rem; margin-bottom: 2rem; font-weight: 300; }
+
+.ptabs {
+  display: flex; gap: .5rem; flex-wrap: wrap;
+  margin-bottom: 1.25rem; justify-content: center;
+}
+.ptab {
+  background: var(--warm); border: 1.5px solid var(--light-gray);
+  border-radius: 8px; padding: .55rem 1.2rem;
+  font-family: 'Jost', sans-serif; font-size: .82rem; font-weight: 500;
+  color: var(--muted); cursor: pointer; transition: all .2s;
+}
+.ptab:hover { border-color: var(--moss-lt); color: var(--bark); }
+.ptab.active { background: var(--bark); border-color: var(--bark); color: #fff; }
+
+.pmap-panel { display: none; }
+.pmap-panel.active { display: block; }
+
+.pmap-wrap {
+  border-radius: 16px; overflow: hidden;
+  box-shadow: 0 8px 32px rgba(61,46,30,.1);
+  position: relative; margin-bottom: 1rem;
+}
+.pmap-wrap iframe { width: 100%; height: 360px; border: none; display: block; }
+
+.pmap-overlay {
+  position: absolute; top: 1rem; left: 1rem;
+  display: flex; flex-direction: column; gap: .5rem;
+  pointer-events: none;
+}
+.pmap-pin {
+  background: rgba(253,250,245,.92); backdrop-filter: blur(8px);
+  border-radius: 8px; padding: .4rem .75rem;
+  font-size: .78rem; font-weight: 500; color: var(--bark);
+  border: 1px solid rgba(61,46,30,.12);
+  white-space: nowrap;
+}
+.pmap-info {
+  display: flex; align-items: center; gap: .75rem;
+  font-size: .85rem; color: var(--muted);
+  background: var(--warm); border-radius: 10px;
+  padding: .75rem 1rem; margin-bottom: .75rem;
+}
+.pmap-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+.pmap-nav {
+  display: inline-block; color: var(--moss); font-size: .82rem;
+  font-weight: 500; text-decoration: none;
+  border-bottom: 1px solid var(--moss-lt); padding-bottom: 2px;
+  transition: color .2s;
+}
+.pmap-nav:hover { color: var(--bark); }
+
+@media (max-width: 600px) {
+  .ptab { font-size: .75rem; padding: .45rem .9rem; }
+  .pmap-wrap iframe { height: 280px; }
+}
+
+.ubyt-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: .75rem; margin-top: 1rem;
+}
+.ubyt-card {
+  display: flex; align-items: center; gap: .75rem;
+  background: var(--warm); border: 1.5px solid var(--light-gray);
+  border-radius: 12px; padding: .75rem 1rem;
+  text-decoration: none; transition: all .2s;
+  cursor: pointer;
+}
+.ubyt-card:hover { border-color: var(--moss-lt); background: var(--linen); transform: translateY(-2px); box-shadow: 0 4px 16px rgba(61,46,30,.08); }
+.ubyt-emoji { font-size: 1.5rem; flex-shrink: 0; }
+.ubyt-card strong { display: block; font-size: .85rem; font-weight: 600; color: var(--bark); margin-bottom: .15rem; }
+.ubyt-card span { font-size: .75rem; color: var(--muted); line-height: 1.4; }
+.ubyt-overlay { max-width: 260px; }
+
+@media (max-width: 700px) { .ubyt-grid { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 480px) { .ubyt-grid { grid-template-columns: 1fr; } }
+
 /* ── GIFT ── */
 .gift-section { background: var(--linen); text-align: center; }
 .gift-inner { max-width: 560px; margin: 0 auto; }
@@ -824,6 +905,219 @@ body.lang-pl span[data-cs] { display: none; }
   </div>
 </section>
 
+<!-- PARKING & ACCOMMODATION MAPS -->
+<section class="parking-section reveal">
+  <div class="parking-inner">
+    <div class="section-label">
+      <span data-cs>Parkování & Ubytování</span>
+      <span data-en>Parking & Accommodation</span>
+      <span data-pl>Parking i Noclegi</span>
+    </div>
+    <h2>
+      <span data-cs>Kde zaparkovat a kde spát?</span>
+      <span data-en>Where to park and where to sleep?</span>
+      <span data-pl>Gdzie zaparkować i gdzie spać?</span>
+    </h2>
+    <p class="lead">
+      <span data-cs>Klikněte na záložku a zobrazí se mapa s vyznačenými parkovišti.</span>
+      <span data-en>Click a tab to show the map with marked parking areas.</span>
+      <span data-pl>Kliknij zakładkę, aby zobaczyć mapę z oznaczonymi parkingami.</span>
+    </p>
+
+    <!-- TAB BUTTONS -->
+    <div class="ptabs">
+      <button class="ptab active" onclick="showPark('obrad')">
+        💍 <span data-cs>Obřad</span><span data-en>Ceremony</span><span data-pl>Ceremonia</span>
+      </button>
+      <button class="ptab" onclick="showPark('oslava')">
+        🎉 <span data-cs>Oslava</span><span data-en>Party</span><span data-pl>Zabawa</span>
+      </button>
+      <button class="ptab" onclick="showPark('fara')">
+        ⛪ <span data-cs>Fara</span><span data-en>Rectory</span><span data-pl>Plebania</span>
+      </button>
+      <button class="ptab" onclick="showPark('prehled')">
+        🗺️ <span data-cs>Přehled</span><span data-en>Overview</span><span data-pl>Przegląd</span>
+      </button>
+      <button class="ptab" onclick="showPark('ubytovani')">
+        🏡 <span data-cs>Ubytování</span><span data-en>Accommodation</span><span data-pl>Noclegi</span>
+      </button>
+    </div>
+
+    <!-- MAP PANELS -->
+    <!-- OBŘAD -->
+    <div class="pmap-panel active" id="park-obrad">
+      <div class="pmap-wrap">
+        <iframe
+          src="https://www.google.com/maps?q=50.395918472738984,12.670416394149264&z=16&output=embed"
+          allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+        <div class="pmap-overlay">
+          <div class="pmap-pin pin-red">🅿️ <span data-cs>Parkování podél silnice 2194</span><span data-en>Parking along road 2194</span><span data-pl>Parking wzdłuż drogi 2194</span></div>
+          <div class="pmap-pin pin-heart">💍 <span data-cs>Obřad – Kaplička Jelení</span><span data-en>Ceremony – Jelení Chapel</span><span data-pl>Ceremonia – kapliczka Jelení</span></div>
+        </div>
+      </div>
+      <div class="pmap-info">
+        <span class="pmap-dot" style="background:#e05050"></span>
+        <span data-cs>3 parkoviště podél silnice č. 2194 – vyznačena červeně na vaší mapce</span>
+        <span data-en>3 parking areas along road no. 2194 – marked red on your map</span>
+        <span data-pl>3 parkingi wzdłuż drogi nr 2194 – zaznaczone na czerwono na Waszej mapce</span>
+      </div>
+      <a class="pmap-nav" href="https://maps.google.com/?q=50.395918472738984,12.670416394149264" target="_blank">
+        <span data-cs>Navigovat na místo obřadu →</span><span data-en>Navigate to ceremony →</span><span data-pl>Nawiguj do ceremonii →</span>
+      </a>
+    </div>
+
+    <!-- OSLAVA -->
+    <div class="pmap-panel" id="park-oslava">
+      <div class="pmap-wrap">
+        <iframe
+          src="https://www.google.com/maps?q=50.36528651091963,12.709279748444677&z=16&output=embed"
+          allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+        <div class="pmap-overlay">
+          <div class="pmap-pin pin-red">🅿️ <span data-cs>Parking u fotbalového hřiště</span><span data-en>Parking at football pitch</span><span data-pl>Parking przy boisku</span></div>
+          <div class="pmap-pin pin-heart">🎉 <span data-cs>Místo oslavy – Rolava</span><span data-en>Party venue – Rolava</span><span data-pl>Miejsce zabawy – Rolava</span></div>
+        </div>
+      </div>
+      <div class="pmap-info">
+        <span class="pmap-dot" style="background:#e05050"></span>
+        <span data-cs>Parkování u fotbalového hřiště, cca 500 m od místa oslavy – pak pěšky</span>
+        <span data-en>Parking at the football pitch, approx. 500 m from the venue – then on foot</span>
+        <span data-pl>Parking przy boisku, ok. 500 m od miejsca zabawy – potem pieszo</span>
+      </div>
+      <a class="pmap-nav" href="https://maps.google.com/?q=50.36528651091963,12.709279748444677" target="_blank">
+        <span data-cs>Navigovat na místo oslavy →</span><span data-en>Navigate to party venue →</span><span data-pl>Nawiguj do miejsca zabawy →</span>
+      </a>
+    </div>
+
+    <!-- FARA -->
+    <div class="pmap-panel" id="park-fara">
+      <div class="pmap-wrap">
+        <iframe
+          src="https://www.google.com/maps?q=50.3627,12.7178&z=17&output=embed"
+          allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+        <div class="pmap-overlay">
+          <div class="pmap-pin pin-red">🅿️ <span data-cs>Parkoviště u Fary</span><span data-en>Rectory parking</span><span data-pl>Parking przy plebanii</span></div>
+          <div class="pmap-pin pin-heart">⛪ <span data-cs>Penzion Na faře – Nové Hamry</span><span data-en>Guesthouse Na faře</span><span data-pl>Pensjonat Na faře</span></div>
+        </div>
+      </div>
+      <div class="pmap-info">
+        <span class="pmap-dot" style="background:#5a6b4a"></span>
+        <span data-cs>Parkoviště přímo u penzionu – velká červená plocha podél silnice 2209</span>
+        <span data-en>Parking directly at the guesthouse – large area along road 2209</span>
+        <span data-pl>Parking bezpośrednio przy pensjonacie – duży plac przy drodze 2209</span>
+      </div>
+      <a class="pmap-nav" href="https://maps.google.com/?q=Penzion+Na+faře+Nové+Hamry" target="_blank">
+        <span data-cs>Navigovat na Faru →</span><span data-en>Navigate to Rectory →</span><span data-pl>Nawiguj do plebanii →</span>
+      </a>
+    </div>
+
+    <!-- PŘEHLED -->
+    <div class="pmap-panel" id="park-prehled">
+      <div class="pmap-wrap">
+        <iframe
+          src="https://www.google.com/maps?q=50.3640,12.6900&z=14&output=embed"
+          allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+        <div class="pmap-overlay">
+          <div class="pmap-pin pin-heart">💍 <span data-cs>Obřad – Jelení</span><span data-en>Ceremony</span><span data-pl>Ceremonia</span></div>
+          <div class="pmap-pin pin-heart">🎉 <span data-cs>Oslava – Rolava</span><span data-en>Party</span><span data-pl>Zabawa</span></div>
+          <div class="pmap-pin pin-heart">⛪ <span data-cs>Fara – Nové Hamry</span><span data-en>Rectory</span><span data-pl>Plebania</span></div>
+        </div>
+      </div>
+      <div class="pmap-info">
+        <span class="pmap-dot" style="background:#b8945a"></span>
+        <span data-cs>Oslava → Fara pěšky cca 22 min / 1,7 km · Obřad → Oslava autem cca 8 min</span>
+        <span data-en>Party → Rectory on foot approx. 22 min / 1.7 km · Ceremony → Party by car approx. 8 min</span>
+        <span data-pl>Zabawa → Plebania pieszo ok. 22 min / 1,7 km · Ceremonia → Zabawa autem ok. 8 min</span>
+      </div>
+    </div>
+
+    <!-- UBYTOVÁNÍ -->
+    <div class="pmap-panel" id="park-ubytovani">
+      <div class="pmap-wrap">
+        <iframe
+          src="https://www.google.com/maps?q=Nové+Hamry+362+21&z=14&output=embed"
+          allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+          id="ubyt-iframe">
+        </iframe>
+        <div class="pmap-overlay ubyt-overlay">
+          <div class="pmap-pin pin-green">⛪ Fara – Nové Hamry 67</div>
+          <div class="pmap-pin pin-green">🏨 Hotel Seifert – Nové Hamry 13</div>
+          <div class="pmap-pin pin-green">🏨 Hotel Schwarz – Nové Hamry 18</div>
+          <div class="pmap-pin pin-green">🛏️ Hamerská Jizba – Nové Hamry 228</div>
+          <div class="pmap-pin pin-green">🛏️ U Jelínka – Nové Hamry 382</div>
+          <div class="pmap-pin pin-green">🛏️ Chata Monika – Nové Hamry 85</div>
+        </div>
+      </div>
+      <div class="ubyt-grid">
+        <a class="ubyt-card" href="https://maps.google.com/?q=Penzion+Na+Faře+Nové+Hamry" target="_blank">
+          <span class="ubyt-emoji">⛪</span>
+          <div>
+            <strong>Penzion Na Faře</strong>
+            <span data-cs>Nové Hamry 67 · ⭐ 4.0</span>
+            <span data-en>Nové Hamry 67 · ⭐ 4.0</span>
+            <span data-pl>Nové Hamry 67 · ⭐ 4.0</span>
+          </div>
+        </a>
+        <a class="ubyt-card" href="https://maps.google.com/?q=Hotel+Seifert+Nové+Hamry" target="_blank">
+          <span class="ubyt-emoji">🏨</span>
+          <div>
+            <strong>Hotel Seifert</strong>
+            <span data-cs>Nové Hamry 13 · ⭐ 4.4</span>
+            <span data-en>Nové Hamry 13 · ⭐ 4.4</span>
+            <span data-pl>Nové Hamry 13 · ⭐ 4.4</span>
+          </div>
+        </a>
+        <a class="ubyt-card" href="https://maps.google.com/?q=Hotel+Schwarz+Nové+Hamry" target="_blank">
+          <span class="ubyt-emoji">🏨</span>
+          <div>
+            <strong>Hotel Schwarz</strong>
+            <span data-cs>Nové Hamry 18 · ⭐ 4.2</span>
+            <span data-en>Nové Hamry 18 · ⭐ 4.2</span>
+            <span data-pl>Nové Hamry 18 · ⭐ 4.2</span>
+          </div>
+        </a>
+        <a class="ubyt-card" href="https://maps.google.com/?q=Pension+Hamerská+Jizba+Nové+Hamry" target="_blank">
+          <span class="ubyt-emoji">🛏️</span>
+          <div>
+            <strong>Hamerská Jizba</strong>
+            <span data-cs>Nové Hamry 228 · ⭐ 4.7</span>
+            <span data-en>Nové Hamry 228 · ⭐ 4.7</span>
+            <span data-pl>Nové Hamry 228 · ⭐ 4.7</span>
+          </div>
+        </a>
+        <a class="ubyt-card" href="https://maps.google.com/?q=Pension+u+Jelínka+Nové+Hamry" target="_blank">
+          <span class="ubyt-emoji">🛏️</span>
+          <div>
+            <strong>Penzion u Jelínka</strong>
+            <span data-cs>Nové Hamry 382 · ⭐ 4.6</span>
+            <span data-en>Nové Hamry 382 · ⭐ 4.6</span>
+            <span data-pl>Nové Hamry 382 · ⭐ 4.6</span>
+          </div>
+        </a>
+        <a class="ubyt-card" href="https://maps.google.com/?q=Chata+Monika+Nové+Hamry" target="_blank">
+          <span class="ubyt-emoji">🛏️</span>
+          <div>
+            <strong>Chata Monika</strong>
+            <span data-cs>Nové Hamry 85 · ⭐ 4.5</span>
+            <span data-en>Nové Hamry 85 · ⭐ 4.5</span>
+            <span data-pl>Nové Hamry 85 · ⭐ 4.5</span>
+          </div>
+        </a>
+      </div>
+      <div class="pmap-info" style="margin-top:1rem;">
+        <span class="pmap-dot" style="background:#5a6b4a"></span>
+        <span data-cs>Ubytování si každý hradí sám. Klikněte na penzion pro navigaci.</span>
+        <span data-en>Accommodation is at your own expense. Click any guesthouse to navigate.</span>
+        <span data-pl>Nocleg każdy opłaca we własnym zakresie. Kliknij pensjonat, aby nawigować.</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
 <!-- FOOTER -->
 <footer>
   <div class="footer-monogram">Eva &amp; Josef</div>
@@ -834,6 +1128,14 @@ body.lang-pl span[data-cs] { display: none; }
 </div><!-- end #main-content -->
 
 <script>
+// ══ PARKING TABS ══
+function showPark(id) {
+  document.querySelectorAll('.pmap-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.ptab').forEach(b => b.classList.remove('active'));
+  document.getElementById('park-' + id).classList.add('active');
+  event.currentTarget.classList.add('active');
+}
+
 // ══ PASSWORD ══
 const CORRECT_PW = 'EJ26';
 function checkPassword() {
