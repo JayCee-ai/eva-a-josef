@@ -545,8 +545,39 @@ body.lang-pl [data-en] { display: none; }
 .reveal.visible { opacity: 1; transform: translateY(0); }
 
 /* ── RESPONSIVE ── */
+.hamburger {
+  display: none; flex-direction: column; gap: 5px;
+  background: none; border: none; cursor: pointer; padding: .3rem;
+}
+.hamburger span {
+  display: block; width: 22px; height: 2px;
+  background: var(--bark); border-radius: 2px;
+  transition: all .3s ease;
+}
+.hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.hamburger.open span:nth-child(2) { opacity: 0; }
+.hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+.nav-mobile-menu {
+  display: none; position: fixed; top: 62px; left: 0; right: 0; z-index: 99;
+  background: rgba(253,250,245,.97); backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(181,168,152,.3);
+  padding: .75rem 5% 1rem; flex-direction: column;
+}
+.nav-mobile-menu.open { display: flex; }
+.nav-mobile-menu a {
+  display: block; padding: .65rem 0;
+  text-decoration: none; font-size: .78rem; font-weight: 500;
+  letter-spacing: .1em; text-transform: uppercase;
+  color: var(--muted); border-bottom: 1px solid var(--light-gray);
+  transition: color .2s;
+}
+.nav-mobile-menu a:last-child { border-bottom: none; }
+.nav-mobile-menu a:hover { color: var(--bark); }
+.nav-mobile-langs { display: flex; gap: .4rem; padding-top: .75rem; }
+
 @media (max-width: 800px) {
   .nav-links { display: none; }
+  .hamburger { display: flex; }
   .story-inner { grid-template-columns: 1fr; gap: 2.5rem; }
   .story-photos { height: 280px; grid-template-rows: 1fr; grid-template-columns: 1fr 1fr; }
   .details-grid { grid-template-columns: 1fr 1fr; }
@@ -611,7 +642,25 @@ body.lang-pl [data-en] { display: none; }
     <button class="lang-btn" onclick="setLang('en')">EN</button>
     <button class="lang-btn" onclick="setLang('pl')">PL</button>
   </div>
+  <button class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
+
+<!-- MOBILE MENU -->
+<div class="nav-mobile-menu" id="mobile-menu">
+  <a href="#story" onclick="closeMenu()"><span data-cs>Náš příběh</span><span data-en>Our Story</span><span data-pl>Nasza historia</span></a>
+  <a href="#details" onclick="closeMenu()"><span data-cs>Místo</span><span data-en>Venue</span><span data-pl>Miejsce</span></a>
+  <a href="#program" onclick="closeMenu()"><span data-cs>Program</span><span data-en>Schedule</span><span data-pl>Program</span></a>
+  <a href="#gallery" onclick="closeMenu()"><span data-cs>Fotky</span><span data-en>Photos</span><span data-pl>Zdjęcia</span></a>
+  <a href="#gift" onclick="closeMenu()"><span data-cs>Dary</span><span data-en>Gifts</span><span data-pl>Prezenty</span></a>
+  <a href="#parking" onclick="closeMenu()"><span data-cs>Mapy</span><span data-en>Maps</span><span data-pl>Mapy</span></a>
+  <div class="nav-mobile-langs">
+    <button class="lang-btn active" onclick="setLang('cs')">CS</button>
+    <button class="lang-btn" onclick="setLang('en')">EN</button>
+    <button class="lang-btn" onclick="setLang('pl')">PL</button>
+  </div>
+</div>
 
 <!-- BOTANICAL SVGs -->
 <svg class="botanical-left" viewBox="0 0 200 600" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1086,7 +1135,12 @@ body.lang-pl [data-en] { display: none; }
     </div>
 
     <!-- UBYTOVÁNÍ -->
-    <div class="pmap-panel" id="park-ubytovani">
+    <div class="ubytovani-section">
+      <div class="section-label" style="text-align:left;margin:2rem 0 .5rem">
+        <span data-cs>🏡 Ubytování v okolí</span>
+        <span data-en>🏡 Nearby accommodation</span>
+        <span data-pl>🏡 Noclegi w okolicy</span>
+      </div>
       <div class="pmap-wrap">
         <iframe
           src="https://www.google.com/maps?q=Nové+Hamry+362+21&z=14&output=embed"
@@ -1164,6 +1218,7 @@ body.lang-pl [data-en] { display: none; }
         <span data-en>Accommodation is at your own expense. Click any guesthouse to navigate.</span>
         <span data-pl>Nocleg każdy opłaca we własnym zakresie. Kliknij pensjonat, aby nawigować.</span>
       </div>
+      </div>
     </div>
 
   </div>
@@ -1185,6 +1240,18 @@ function showPark(id) {
   document.querySelectorAll('.ptab').forEach(b => b.classList.remove('active'));
   document.getElementById('park-' + id).classList.add('active');
   event.currentTarget.classList.add('active');
+}
+
+// ══ HAMBURGER MENU ══
+function toggleMenu() {
+  const btn = document.getElementById('hamburger');
+  const menu = document.getElementById('mobile-menu');
+  btn.classList.toggle('open');
+  menu.classList.toggle('open');
+}
+function closeMenu() {
+  document.getElementById('hamburger').classList.remove('open');
+  document.getElementById('mobile-menu').classList.remove('open');
 }
 
 // ══ PASSWORD ══
